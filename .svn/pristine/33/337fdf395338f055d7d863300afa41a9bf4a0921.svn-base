@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <title>Web Statement - Product Setup</title>
+
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/jquery-ui-dist@1.12.1/jquery-ui.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/smartwizard@5.1.1/dist/js/jquery.smartWizard.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/tablednd@1.0.3/dist/jquery.tablednd.min.js"></script>
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/smartwizard@5.1.1/dist/css/smart_wizard_all.min.css" integrity="sha256-lrZoiTAZR2dP0jXJaRs/U7rs1jk6u7FkjMT7QI2GHus=" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-ui-dist@1.12.1/jquery-ui.css" integrity="sha256-p6xU9YulB7E2Ic62/PX+h59ayb3PBJ0WFTEQxq0EjHw=" crossorigin="anonymous">
+        <link href="/css/page.css" rel="stylesheet" />
+        <link href="/font/noto.css" rel="stylesheet" />
+        <link href="/font/barcode.css" rel="stylesheet" />
+    </head>
+    <body>
+        <div class="page">
+            <h3>Product Display Settings - Web Statement</h3>
+            <div id="smartwizard">
+                <ul class="nav">
+                    <li>
+                        <a class="nav-link" href="#step-1">Step 1 - Choose Product</a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="#step-2">Step 2 - Display Settings</a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="#step-3">Step 3 - Display Sequence</a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="#step-4">Step 4 - Choose Message</a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="#step-5">Step 5 - Message Settings</a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="#step-6">Step 6 - Preview</a>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <div id="step-1" class="tab-pane" role="tabpanel">
+                        <h3>Please choose service area -</h3>
+                        <label class="col-sm-3 justify-content-start">Business Segment</label>
+                        <select class="col-sm-6 justify-content-center">
+                            <option>AAA</option>
+                            <option>BBB</option>
+                            <option>CCC</option>
+                        </select>
+                        <br>
+                        <label class="col-sm-3 justify-content-start">Source</label>
+                        <select class="col-sm-6 justify-content-center">
+                            <option>X</option>
+                            <option>Y</option>
+                        </select>
+                        <label class="col-sm-3 justify-content-start">Product Code</label> <input id="product-code" class="col-sm-6" type="text">
+                        <br>
+                        <input id="search-product" class="col-sm-6 justify-content-center" type="button" value="Query">
+                    </div>
+                    <div id="step-2" class="tab-pane" role="tabpanel">
+                        <h3>Please define display settings of product - </h3>
+                        <dl>
+                            <dt>Service Area</dt> <dd>AAA - X</dd>
+                            <dt>Product Code</dt> <dd>203</dd>
+                            <dt>Product Family</dt> <dd>SA - Saving Account</dd>
+                            <dt>System ID</dt><dd>ALS</dd>
+                            <dt>Include Product in Statement?</dt> <dd><input type="radio" name="include-stmt" value="Y" >Yes<input type="radio" name="include-stmt" value="N" >No</dd>
+                            <dt>Include in Statement Suppression Product List?</dt> <dd><input type="radio" name="include-stmt-suppression" value="Y" >Yes<input type="radio" name="include-stmt-suppression" value="N" >No</dd>
+                        
+                            <dt>Format Type in Summary</dt>
+                            <dd>
+                                <select class="col-sm-6 justify-content-center">
+                                    <option>SA01</option>
+                                    <option>CA01</option>
+                                    <option>CA02</option>
+                                    <option>SA02</option>
+                                    <option>LN01</option>
+                                </select>
+                            </dd>
+                            <dt>Format Type in Details</dt>
+                            <dd>
+                                <select class="col-sm-6 justify-content-center">
+                                    <option>NONE</option>
+                                    <option>CA01</option>
+                                    <option>CA02</option>
+                                    <option>SA01</option>
+                                    <option>SA02</option>
+                                    <option>LN01</option>
+                                </select>
+                            </dd>
+
+                            <dt>Product Description in Statement - English</dt><dd><input id="product-description-001" class="col-sm-6" type="text"></dd>
+                            <dt>Product Description in Statement - Simplified Chinese</dt><dd><input id="product-description-002" class="col-sm-6" type="text"></dd>
+                        </dl>
+                    </div>
+                    <div id="step-3" class="tab-pane" role="tabpanel">
+                        <h3>Product Layout List</h3>
+                        <div class="alert alert-info" role="alert">Please drag below rows to change sequnce of tables.</div>
+                        <table id="prod-seq" class="table table-bordered table-hover">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Biz Segment</th>
+                                    <th>Source</th>
+                                    <th>Layout</th>
+                                    <th>Layout Description</th>
+                                    <th>Product Code</th>
+                                    <th>Product Description - English</th>
+                                    <th>Product Description - Chinese</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr id="203-SA01">
+                                    <td>AAA</td>
+                                    <td>X</td>
+                                    <td>SA01</td>
+                                    <td>Saving Account Summary</td>
+                                    <td>203</td>
+                                    <td>Package Saving RMB</td>
+                                    <td>人民币活期储蓄存款</td>
+                                </tr>
+                                <tr id="203-SA02">
+                                    <td>AAA</td>
+                                    <td>X</td>
+                                    <td>SA02</td>
+                                    <td>Saving Account Details</td>
+                                    <td>203</td>
+                                    <td>Package Saving RMB</td>
+                                    <td>人民币活期储蓄存款</td>
+                                </tr>
+                                <tr id="205-LN01">
+                                    <td>AAA</td>
+                                    <td>X</td>
+                                    <td>LN01</td>
+                                    <td>Loan Summary</td>
+                                    <td>205</td>
+                                    <td>Package Investment Portofilio RMB</td>
+                                    <td>人民币投资组合</td>
+                                </tr>
+                                <tr id="205-LN02">
+                                    <td>AAA</td>
+                                    <td>X</td>
+                                    <td>LN02</td>
+                                    <td>Loan Details</td>
+                                    <td>205</td>
+                                    <td>Package Investment Portofilio RMB</td>
+                                    <td>人民币投资组合</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h3>Product Sequence - English</h3>
+                        <div id="prod-seq-eng">
+                            <div id="product-001-203-SA01">
+                                <div class="text-left border-top stmtSummTitle border-dark">Saving & Investment Summary</div>
+                                <table class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr class="thead-light">
+                                            <th>Deposit Type</th>
+                                            <th>Account NO.</th>
+                                            <th>CCY/Product</th>
+                                            <th>Balance - USD</th>
+                                            <th>Balance - RMB</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>XXXXX - RMB</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>0.0</td>
+                                        </tr>
+                                        <tr class="table-light">
+                                            <td>Total Amount</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td><b>0.0</b></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div id="product-001-203-SA02">
+                                <span class="col-sm-6 justify-content-left">Package Saving - RMB</span> <span>[Account NO.]</span>
+                                <br>
+                                <table class="table table-bordered table-hover">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Transaction Description</th>
+                                            <th>Deposit</th>
+                                            <th>Withdrawl</th>
+                                            <th>Balance</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td>Total</td>
+                                            <td>0.0</td>
+                                            <td>0.0</td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div id="product-001-205-LN01">
+                                <div class="text-left border-top stmtSummTitle border-dark">Loan Summary</div>
+                                <table class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr class="thead-light">
+                                            <th>Type</th>
+                                            <th>Account NO.</th>
+                                            <th>Prime</th>
+                                            <th>Next Payment</th>
+                                            <th>Current Prime</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td></td>
+                                            <td>XXXXX - RMB</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>0.0</td>
+                                        </tr>
+                                        <tr class="table-light">
+                                            <td>Total Amount - RMB</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td><b>0.0</b></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div id="product-001-205-LN02">
+                                <span class="col-sm-6 justify-content-left">Package Investment Portofilio - RMB</span> <span>[Account NO.]</span>
+                                <br>
+                                <table class="table table-bordered table-hover">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Transaction Description</th>
+                                            <th>Deposit</th>
+                                            <th>Withdrawl</th>
+                                            <th>Balance</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td>Total</td>
+                                            <td>0.0</td>
+                                            <td>0.0</td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div id="prod-seq-chn">
+                            <div id="product-002-203-SA01">
+                                <div class="text-left border-top stmtSummTitle border-dark">存款及投资账户概要</div>
+                                <table class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr class="thead-light">
+                                            <th>存款种类</th>
+                                            <th>账户号码</th>
+                                            <th>币别/商品</th>
+                                            <th>外币结余</th>
+                                            <th>本币结余（等值）</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>XXXXX - RMB</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>0.0</td>
+                                        </tr>
+                                        <tr class="table-light">
+                                            <td>存款及投资账户总额</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td><b>0.0</b></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div id="product-002-203-SA02">
+                                <span class="col-sm-6 justify-content-left">人民币活期储蓄存款</span> <span>[Account NO.]</span>
+                                <br>
+                                <table class="table table-bordered table-hover">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>日期</th>
+                                            <th>存提记录</th>
+                                            <th>存入</th>
+                                            <th>提出</th>
+                                            <th>余额</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td>合计</td>
+                                            <td>0.0</td>
+                                            <td>0.0</td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div id="product-002-205-LN01">
+                                <div class="text-left border-top stmtSummTitle border-dark">贷款概要</div>
+                                <table class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr class="thead-light">
+                                            <th>类型</th>
+                                            <th>Account NO.</th>
+                                            <th>本金</th>
+                                            <th>本期应还</th>
+                                            <th>本期本金余额</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td></td>
+                                            <td>XXXXX - RMB</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>0.0</td>
+                                        </tr>
+                                        <tr class="table-light">
+                                            <td>贷款总额（人民币）</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td><b>0.0</b></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div id="product-002-205-LN02">
+                                <span class="col-sm-6 justify-content-left">人民币投资组合</span> <span>[Account NO.]</span>
+                                <br>
+                                <table class="table table-bordered table-hover">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>日期</th>
+                                            <th>存提记录</th>
+                                            <th>存入</th>
+                                            <th>提出</th>
+                                            <th>余额</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td>合计</td>
+                                            <td>0.0</td>
+                                            <td>0.0</td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="step-4" class="tab-pane" role="tabpanel">
+                        <h3>Please choose message type</h3>
+                        <dl>
+                            <dt>Service Area</dt> <dd>AAA - X</dd>
+                            <dt>Product Code</dt> <dd>203</dd>
+                            <dt>Product Family</dt> <dd>SA - Saving Account</dd>
+                            <dt>System ID</dt><dd>ALS</dd>
+                            <dt>Format Type</dt>
+                            <dd>
+                                <select id="msg-sub-type" class="col-sm-8 justify-content-center">
+                                    <option>CA01</option>
+                                    <option>CA02</option>
+                                    <option>SA01</option>
+                                    <option>SA02</option>
+                                    <option>LN01</option>
+                                </select>
+                            </dd>
+                            <dt>Message Type</dt>
+                            <dd>
+                                <select id="msg-type" class="col-sm-8 justify-content-center">
+                                    <option>1 - News Flash</option>
+                                    <option>2 - Customer Service</option>
+                                    <option>3 - Letter Page</option>
+                                    <option>4 - Product Processor</option>
+                                    <option>5 - Birthday</option>
+                                    <option>6 - Bank Fee</option>
+                                    <option>7 - Disclaimer</option>
+                                </select>
+                            </dd>
+                        </dl>
+                    </div>
+                    <div id="step-5" class="tab-pane" role="tabpanel">
+                        <h3>Please edit <b>Disclaimer</b></h3>
+                        <dl>
+                            <dt>Service Area</dt> <dd>AAA - X</dd>
+                            <dt>Product Code</dt> <dd>203</dd>
+                            <dt>Product Family</dt> <dd>SA - Saving Account</dd>
+                            <dt>System ID</dt><dd>ALS</dd>
+                            <dt>Format Type</dt><dd>SA01</dd>
+                            <dt>Message Placeholder</dt>
+                            <dd>
+                                <select id="msg-placeholder" class="col-sm-8 justify-content-center">
+                                    <option>{$SA01-Summary-Disclaimer$}</option>
+                                    <option>{$SA02-Details-Disclaimer$}</option>
+                                </select>
+                            </dd>
+                            <dt>Message - English</dt>
+                            <dd><textarea class="col-sm=12" style="height: 300px;"></textarea></dd>
+                            <dt>Message - Chinese</dt>
+                            <dd><textarea class="col-sm=12" style="height: 300px;"></textarea></dd>
+                        </dl>
+                    </div>
+                    <div id="step-6" class="tab-pane" role="tabpanel">
+                        <h3>Preview - AAA/X</h3>
+                        <div id="tabs">
+                            <ul>
+                                <li><a href="#tabs-1">English</a></li>
+                                <li><a href="#tabs-2">Chinese</a></li>
+                            </ul>
+                            <div id="tabs-1">
+                                <dl>
+                                    <dt>News Flash</dt><dd>Your numbers are 021-77778888/021-77779999<br >If NOT, please contact us via 021-77776666 as soon as possible for your interest.</dd>
+                                    <dt>Statement Summary</dt>
+                                    <dd>
+                                        <div class="text-center">As of MM/DD/YYYY</div>
+                                        <div class="one-glance-summary">
+                                            <table id="sa-in-table" class="table table-borderless">
+                                                <thead>
+                                                    <tr class="d-flex">
+                                                        <th scope="col" class="col-3"></th>
+                                                        <th scope="col" class="col-4">Total Asset</th>
+                                                        <th scope="col" class="col-7">Total Liability</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="one-glance-summary-checking d-flex">
+                                                        <td class="col-3">Checking Account</td>
+                                                        <td class="one-glance-summary-asset col-4">N/A</td>
+                                                        <td class="one-glance-summary-liability col-7"></td>
+                                                    </tr>
+                                                    <tr class="one-glance-summary-saving d-flex">
+                                                        <td class="col-3">Saving and Investment</td>
+                                                        <td class="one-glance-summary-asset col-4">0.00</td>
+                                                        <td class="one-glance-summary-liability col-7"></td>
+                                                    </tr>
+                                                    <tr class="one-glance-summary-loan d-flex">
+                                                        <td class="col-3">Loan</td>
+                                                        <td class="one-glance-summary-asset col-4"></td>
+                                                        <td class="one-glance-summary-liability col-7">0.00</td>
+                                                    </tr>
+                                                    <tr class="one-glance-summary-credit-card d-flex">
+                                                        <td class="col-3">Credit Card</td>
+                                                        <td class="one-glance-summary-asset col-4"></td>
+                                                        <td class="one-glance-summary-liability col-7">N/A</td>
+                                                    </tr>
+                                                    <tr class="one-glance-summary-insurance d-flex">
+                                                        <td class="col-3">Insurance</td>
+                                                        <td class="one-glance-summary-asset col-4">N/A</td>
+                                                        <td class="one-glance-summary-liability col-7"></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </dd>
+                                    <dt>Account Summary</dt>
+                                    <dd>
+                                        <h4>Saving and Investment Summary</h4>
+                                        <table class="table table-bordered table-hover">
+                                            <thead class="thead-light">
+                                                <tr>
+                                                    <th>Type</th>
+                                                    <th>Account NO.</th>
+                                                    <th>CCY/Product</th>
+                                                    <th>Foreign Balance</th>
+                                                    <th>RMB Balance - Equal</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr class="table-light">
+                                                    <td>Total Amount of Saving and Investment</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td><b>0.00</b></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <h4>Loan Summary</h4>
+                                        <table class="table table-bordered table-hover">
+                                            <thead class="thead-light">
+                                                <tr>
+                                                    <th>Type</th>
+                                                    <th>Account NO.</th>
+                                                    <th>Prime Amount</th>
+                                                    <th>Next Payment</th>
+                                                    <th>Prime Balance</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr class="table-light">
+                                                    <td>Total Amount - RMB</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td><b>0.00</b></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </dd>
+                                    <dt>Account Detail</dt>
+                                    <dd>
+                                        <div>
+                                            <span class="col-sm-6 justify-content-left">Package Saving RMB</span> <span>[Account NO.]</span>
+                                            <br>
+                                            <table class="table table-bordered table-hover">
+                                                <thead class="thead-light">
+                                                    <tr>
+                                                        <th>Date</th>
+                                                        <th>Transaction</th>
+                                                        <th>Deposit</th>
+                                                        <th>Withdraw</th>
+                                                        <th>Balance</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                    <tr class="table-light">
+                                                        <td></td>
+                                                        <td>Total</td>
+                                                        <td>0.0</td>
+                                                        <td>0.0</td>
+                                                        <td></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div id="product-detail-001-205">
+                                            <span class="col-sm-6 justify-content-left">Package Investment Portofilio RMB</span><span>[Account NO.]</span>
+                                            <br>
+                                            <table class="table table-bordered table-hover">
+                                                <thead class="thead-light">
+                                                    <tr>
+                                                        <th>Date</th>
+                                                        <th>Transaction Description</th>
+                                                        <th>Deposit</th>
+                                                        <th>Withdraw</th>
+                                                        <th>Balance</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                    <tr class="table-light">
+                                                        <td></td>
+                                                        <td>Total</td>
+                                                        <td>0.0</td>
+                                                        <td>0.0</td>
+                                                        <td></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </dd>
+                                </dl>
+                            </div>
+                            <div id="tabs-2">
+                                <dl>
+                                    <dt>快讯</dt><dd>您在本行所有电话为 021-77778888/021-77779999<br >若有误，请立即与 021-77776666 联系，以维护您的权益</dd>
+                                    <dt>对账单总览</dt>
+                                    <dd>
+                                        <div class="text-center">截至 MM/DD/YYYY</div>
+                                        <div class="one-glance-summary">
+                                            <table id="sa-in-table" class="table table-borderless">
+                                                <thead>
+                                                    <tr class="d-flex">
+                                                        <th scope="col" class="col-3"></th>
+                                                        <th scope="col" class="col-4">存款与投资总额</th>
+                                                        <th scope="col" class="col-7">贷款与信用卡总额</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="one-glance-summary-checking d-flex">
+                                                        <td class="col-3">结算账户</td>
+                                                        <td class="one-glance-summary-asset col-4">尚未申请</td>
+                                                        <td class="one-glance-summary-liability col-7"></td>
+                                                    </tr>
+                                                    <tr class="one-glance-summary-saving d-flex">
+                                                        <td class="col-3">存款及投资</td>
+                                                        <td class="one-glance-summary-asset col-4">0.00</td>
+                                                        <td class="one-glance-summary-liability col-7"></td>
+                                                    </tr>
+                                                    <tr class="one-glance-summary-loan d-flex">
+                                                        <td class="col-3">贷款</td>
+                                                        <td class="one-glance-summary-asset col-4"></td>
+                                                        <td class="one-glance-summary-liability col-7">0.00</td>
+                                                    </tr>
+                                                    <tr class="one-glance-summary-credit-card d-flex">
+                                                        <td class="col-3">信用卡</td>
+                                                        <td class="one-glance-summary-asset col-4"></td>
+                                                        <td class="one-glance-summary-liability col-7">尚未申请</td>
+                                                    </tr>
+                                                    <tr class="one-glance-summary-insurance d-flex">
+                                                        <td class="col-3">保险</td>
+                                                        <td class="one-glance-summary-asset col-4">尚未申请</td>
+                                                        <td class="one-glance-summary-liability col-7"></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </dd>
+                                    <dt>账户总览</dt>
+                                    <dd>
+                                        <h4>存款与投资总览</h4>
+                                        <table class="table table-bordered table-hover">
+                                            <thead class="thead-light">
+                                                <tr>
+                                                    <th>存款种类</th>
+                                                    <th>账户号码</th>
+                                                    <th>币种/商品</th>
+                                                    <th>外币余额</th>
+                                                    <th>人民币等值余额</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr class="table-light">
+                                                    <td>存款及投资账户总额</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td><b>0.00</b></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <h4>贷款总览</h4>
+                                        <table class="table table-bordered table-hover">
+                                            <thead class="thead-light">
+                                                <tr>
+                                                    <th>类型</th>
+                                                    <th>账户号码
+                                                    <th>本金总额</th>
+                                                    <th>下期应还</th>
+                                                    <th>剩余本金</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr class="table-light">
+                                                    <td>贷款总额</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td><b>0.00</b></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </dd>
+                                    <dt>您在本行的账户明细</dt>
+                                    <dd>
+                                        <div>
+                                            <span class="col-sm-6 justify-content-left">人民币活期储蓄存款</span> <span>[Account NO.]</span>
+                                            <br>
+                                            <table class="table table-bordered table-hover">
+                                                <thead class="thead-light">
+                                                    <tr>
+                                                        <th>日期</th>
+                                                        <th>交易记录</th>
+                                                        <th>存入</th>
+                                                        <th>支取</th>
+                                                        <th>余额</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                    <tr class="table-light">
+                                                        <td></td>
+                                                        <td>合计</td>
+                                                        <td>0.0</td>
+                                                        <td>0.0</td>
+                                                        <td></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div id="product-detail-001-205">
+                                            <span class="col-sm-6 justify-content-left">人民币投资组合</span><span>[Account NO.]</span>
+                                            <br>
+                                            <table class="table table-bordered table-hover">
+                                                <thead class="thead-light">
+                                                    <tr>
+                                                        <th>日期</th>
+                                                        <th>交易记录</th>
+                                                        <th>存入</th>
+                                                        <th>提出</th>
+                                                        <th>余额</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                    <tr class="table-light">
+                                                        <td></td>
+                                                        <td>合计</td>
+                                                        <td>0.0</td>
+                                                        <td>0.0</td>
+                                                        <td></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+           $(document).ready(function (){
+            
+            $("#search-product").click(function (){
+                var prodCode = $("#product-code").val();
+                if(prodCode==="203") {
+                    alert("Product Found!");
+                } else {
+                    alert("Product Not Found!");
+                }
+            });
+
+            $("#tabs").tabs();
+
+            var btnFinish = $("<button></button>").text("Finish")
+                                .addClass("btn btn-info")
+                                .on("click", function() {
+                                    alert("Product Setup Will Save!");
+                                });
+
+            var btnCancel = $("<button></button>").text("Reset")
+                                .addClass("btn btn-danger")
+                                .on("click", function() {
+                                    $("#smartwizard").smartWizard("reset");
+                                });
+
+            // Step show event
+            $("#smartwizard").on("showStep", function(e, anchorObject, stepNumber, stepDirection, stepPosition) {
+                $("#prev-btn").removeClass("disabled");
+                $("#next-btn").removeClass("disabled");
+                if(stepPosition==="first") {
+                    $("#prev-btn").addClass("disabled");
+                } else if(stepPosition==="last") {
+                    $("#next-btn").removeClass("disabled");
+                } else {
+                    $("#prev-btn").removeClass("disabled");
+                    $("#next-btn").removeClass("disabled");
+                }
+            });
+
+            //SmartWizard Initialize
+            $("#smartwizard").smartWizard({
+                selected: 0,
+                theme: 'dots',
+                justified: true,
+                darkMode: false,
+                autoAdjustHeight: true,
+                cycleSteps: false,
+                backButtonSupport: true,
+                enableURLhash: true,
+                transition: {
+                    animation: 'fade',
+                    speed: '400',
+                    easing: ''
+                },
+                toolbarSettings: {
+                    toolbarPosition: 'bottom',
+                    toolbarButtonPosition: 'right',
+                    showNextButton: true,
+                    showPreviousButton: true,
+                    toolbarExtraButtons: [btnFinish, btnCancel]
+                },
+                anchorSettings: {
+                    anchorClickable: true,
+                    enableAllAnchors:true,
+                    markDoneStep:true,
+                    markAllPreviousStepsAsDone:true,
+                    removeDoneStepOnNavigateBack:false,
+                    enableAnchorOnDoneStep:true
+                },
+                keyboardSettings: {
+                    keyNavigation: true,
+                    keyLeft: [37],
+                    keyRight: [39]
+                },
+                lang: {
+                    next: 'Next',
+                    previous: 'Previous'
+                },
+                diabledSteps: [],
+                errorSteps:[],
+                hiddenSteps:[]
+            });
+
+            var engTables=[];
+            var chnTables=[];
+
+            $("#prod-seq").tableDnD({
+                onDragStart: function(table, row) {
+                    console.log("Init Arrays: "+ engTables);
+                    engTables=[];
+                    chnTables=[];
+                },
+                onDrop: function(table, row) {
+                    var rows = table.tBodies[0].rows;
+                    var debugStr = "Row dropped was "+row.id + ". New order: ";
+
+                    for (let i = 0; i < rows.length; i++) {
+                        const element = rows[i];
+                        
+                        debugStr += rows[i].id+" ";
+
+                        var engTableId = "#product-001-"+rows[i].id;
+                        var chnTableId = "#product-002-"+ rows[i].id;
+
+                        $(engTableId).hide();
+                        $(chnTableId).hide();
+
+                        engTables.push($(engTableId));
+                        chnTables.push($(chnTableId));
+
+                        $(engTableId).remove();
+                        $(chnTableId).remove();
+                    }
+
+                    console.log(debugStr);
+
+                    engTables.forEach(function(item, index) {
+                        $("#prod-seq-eng").append(item);
+                        console.log($("#"+item.attr("id")));
+                        console.log($("#"+item.attr("id")).attr("style"));
+                        $("#"+item.attr("id")).fadeIn(2000);
+                    });
+
+                    chnTables.forEach(function(item, index) {
+                        $("#prod-seq-chn").append(item);
+                        console.log($("#"+item.attr("id")));
+                        console.log($("#"+item.attr("id")).attr("style"));
+                        $("#"+item.attr("id")).fadeIn(2000);
+                    });
+                }
+            });
+
+           });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,89 @@
+package webstmt.service;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import lombok.extern.slf4j.Slf4j;
+import webstmt.entity.ForeachReplaceable;
+import webstmt.entity.ProductTotalSummary;
+import webstmt.repo.ProductTotalSummaryRepository;
+
+@Slf4j
+@Service
+public class ProductTotalSummaryService extends CommonService 
+{
+
+	@Autowired
+	ProductTotalSummaryRepository prodTotalSummRepo;
+	
+	private List<ProductTotalSummary> prodTotalSummList;
+	
+	@Value("${app.section.template.file.product.total.summary}")
+	String prodSummTemplateFile;
+	
+	@Override
+	String getTemplateFileName() 
+	{
+		return prodSummTemplateFile;
+	}
+
+	@Override
+	String getRecordTypeName() 
+	{
+		return "Product Total Summary";
+	}
+
+	@Override
+	String getSectionId() 
+	{
+		return "PROD_SUMM_TOTAL";
+	}
+
+	@Override
+	void readRecords(String date, String relationshipNo) 
+	{
+		prodTotalSummList = prodTotalSummRepo.getProductTotalSummaryList(date, relationshipNo);
+	}
+
+	@Override
+	boolean hasNoRecord() 
+	{	
+		return prodTotalSummList==null||prodTotalSummList.size()==0;
+	}
+
+	@Override
+	String replace(String template) throws IOException 
+	{
+		String formattedHtml = "";
+		
+		List<ForeachReplaceable> assetList = new ArrayList<>();
+		List<ForeachReplaceable> liabList = new ArrayList<>();
+		
+		for (ProductTotalSummary prodSumm : prodTotalSummList) {
+			
+			if("A".equalsIgnoreCase(prodSumm.getType()))
+			{
+				assetList.add(prodSumm);
+			}
+			else if("L".equalsIgnoreCase(prodSumm.getType()))
+			{
+				liabList.add(prodSumm);
+			}
+			else
+			{
+				log.warn("Unknown type: "+prodSumm.getType());
+			}
+		}
+		
+		formattedHtml = foreachReplace("asset", template, assetList, "{$name}","{$amount}");
+		formattedHtml = foreachReplace("liab", formattedHtml, liabList, "{$name}","{$amount}");
+		
+		return formattedHtml;
+	}
+
+}

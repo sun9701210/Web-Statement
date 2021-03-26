@@ -1,0 +1,91 @@
+package webstmt.entity.sys;
+
+import java.io.Serializable;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
+import webstmt.entity.sys.datasource.DataBinding;
+
+@Entity
+public class Template implements Serializable
+{
+	private static final long serialVersionUID = -7831627288646326100L;
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private long id;
+	private String name;
+	@Lob
+	@Column(length=522000)
+	private String template;
+	private String description;
+	private String oppm;
+	
+	@OneToMany
+	private List<DataBinding> dataBindings;
+	
+	@ManyToOne
+	private TemplateFolder folder;
+	
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getTemplate() {
+		return template;
+	}
+	public void setTemplate(String template) {
+		this.template = template;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	public List<DataBinding> getDataBindings() {
+		return dataBindings;
+	}
+	public void setDataBindings(List<DataBinding> dataBindings) {
+		this.dataBindings = dataBindings;
+	}	
+	public TemplateFolder getFolder() {
+		return folder;
+	}
+	public void setFolder(TemplateFolder folder) {
+		this.folder = folder;
+	}
+	
+	public String getOppm() {
+		return oppm;
+	}
+	public void setOppm(String oppm) {
+		this.oppm = oppm;
+	}
+	@Override
+	public String toString() {
+		return "Template [id=" + id + ", name=" + name + ", template=" + template + ", description=" + description
+				+ ", oppm=" + oppm + ", folder=" + folder + "]";
+	}
+	
+
+	
+	
+	
+}

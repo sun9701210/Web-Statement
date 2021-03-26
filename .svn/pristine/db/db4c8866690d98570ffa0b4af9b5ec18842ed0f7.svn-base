@@ -1,0 +1,38 @@
+package webstmt.service.sys;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import webstmt.entity.sys.TemplateFolder;
+import webstmt.repo.sys.TemplateFolderRepository;
+
+@Service
+public class TemplateFolderService {
+	
+	@Autowired
+	private TemplateFolderRepository frepo;
+	
+	public List<TemplateFolder> load(){
+		
+		List<TemplateFolder> rootFolders=frepo.findAll();
+		
+		for(TemplateFolder root:rootFolders){
+						
+			System.out.println(root);
+			
+		}
+
+		
+		
+		return rootFolders;
+		
+	}
+	
+	
+	
+	
+
+}

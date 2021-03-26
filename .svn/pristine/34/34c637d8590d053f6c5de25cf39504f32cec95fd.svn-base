@@ -1,0 +1,107 @@
+.page{
+	/* width: 1000px; */
+	min-height: 29.7cm;
+	padding: 2cm;
+	margin: 1cm auto;
+	border: 1px #D3D3D3 solid;
+	border-radius: 5px;
+	background: white;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+@page {
+	size: A4;
+	margin: 0;
+}
+
+@media print {
+	.page {
+		margin: 0;
+		border: initial;
+		border-radius: initial;
+		width: initial;
+		min-height: initial;
+		box-shadow: initial;
+		background: initial;
+		page-break-after: always;
+	}
+}
+
+.stmtTitle {
+	font-family: 'Noto Serif TC', serif;
+	font-size: 18px;
+	padding-bottom: 15px;
+}
+
+.stmtSummTitle {
+	font-family: 'Noto Serif TC', serif;
+	font-size: 18px;
+	padding-top: 5px;
+	padding-bottom: 5px;	
+}
+
+.one-glance-summary-table table thead tr th {
+	font-family: 'Noto Serif TC', serif;
+	font-size: 12px;
+	font-weight: normal;
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+
+.one-glance-summary-table table tbody tr td {
+	font-family: 'Noto Serif TC', serif;
+	font-size: 12px;
+	font-weight: normal;
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+
+.account_detail_section-table table thead tr th {
+	font-family: 'Noto Serif TC', serif;
+	font-size: 12px;
+	font-weight: normal;
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+
+.account_detail_section-table table tbody tr td {
+	font-family: 'Noto Serif TC', serif;
+	font-size: 12px;
+	font-weight: normal;
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+
+.genFont {
+	font-family: 'Noto Serif TC', serif;
+	font-size: 12px;
+}
+
+.barCode {
+	font-family: 'Libre Barcode 39 Text', cursive;
+	font-size: 25px;
+}
+
+.table-borderless>tbody>tr>th,
+.table-borderless>tbody>tr>td,
+.table-borderless>thead>tr>th,
+.table-borderless>thead>tr>td,
+.table-borderless>tfoot>tr>th,
+.table-borderless>tfoot>tr>td {
+	border: none;
+}
+
+.borderless td, .borderless th {
+	border: none;
+}
+
+.borderless {
+	border: none;
+}
+
+.sideBarCode {
+	float: right;
+	position: relative;
+	left: 10px;
+	top: 240px;
+}

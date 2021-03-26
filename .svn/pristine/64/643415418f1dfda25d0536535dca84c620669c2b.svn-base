@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+        <title>Web Statement - New Template</title>
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+        <script src="/ckeditor.js"></script>
+        <script src="/static/ckfinder/ckfinder.js"></script>      
+        <script src="https://ckeditor.com/apps/ckfinder/3.5.1/ckfinder.js"></script>
+         <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>      
+       <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>        
+		<script src="https://cdn.jsdelivr.net/npm/jquery-ui-dist@1.12.1/jquery-ui.min.js"></script>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-ui-dist@1.12.1/jquery-ui.min.css">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-ui-dist@1.12.1/jquery-ui.structure.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+       <style type="text/css">
+	        #DB{
+	        	width:83%;
+				height: 400px;
+				border: var(--ck-color-base-border) solid 1px;
+				float: left;
+				position: absolute;
+				white-space: nowrap; 
+				overflow: auto;
+			}
+			#DBP{
+				width: 100%;
+				height: 320px;
+				white-space: nowrap; 
+				overflow: auto;
+			}
+			#PH{
+				width: 100%;
+				height: 100px;
+				line-height: 40px;
+				float: left;
+				margin-top:30px;
+				border-bottom: #f2f2f2 solid 1px;
+				
+			}
+			.PHH{
+				width: 100%;
+				height: 100px;
+				line-height: 40px;
+				float: left;
+				margin-top:30px;
+				border-bottom: #f2f2f2 solid 1px;
+				
+			}
+			#text{
+				width:200px;
+				height:25px;
+			}
+			#btn{
+				margin-top: 350px;
+				margin-left:45%;
+				position: relative;
+			}
+			#rebtn{
+				width:20px;
+				height:20px;
+				margin-left:99%;
+				float:left;
+				color:var(--ck-color-base-border);
+				margin-top:-105px;
+				cursor:pointer;
+			}
+	</style>
+    </head>
+    <body>
+    <div th:include="dashboard/com/navbar :: navbar"></div>
+    <div class="container">
+        <div th:if="${exist}">
+			<h3>Edit Template</h3>
+			<label for="version-list">Version</label>
+			<select id="version-list">
+				<option selected value="">Current</option>
+				<option th:each="version:${template.versions}" th:value="${version.UUID}" th:text="${version.maker} + '@' + ${version.savedTime} + ' - ' + ${version.UUID}"></option>
+			</select>
+            <form id="tpl-form" action="#" th:action="@{/dashboard/template/edit}" th:object="${template}" method="post">
+				<input type="hidden" th:field="*{id}" />
+				<label for="tpl-name">Name</label><br>
+                <input type="text" id="tpl-name" name="tpl-name" th:field="*{name}" /><br><br>
+                <label for="tpl-ref">Reference OPPM#</label><br>
+                <input type="text" id="tpl-ref" name="tpl-ref" th:field="*{oppm}" /><br><br>
+                <label for="tpl-desc">Description</label><br>
+                <textarea id="tpl-desc" name="tpl-desc" th:field="*{description}"></textarea><br><br>
+                <label for="editor">Template</label><br>
+                <textarea name="tpl-editor" id="tpl-editor" th:text="${template.content}">
+                    &lt;p&gt;This is some sample content.&lt;/p&gt;
+                </textarea>
+				<br>
+				<label for="data-binding">Data Binding</label><button id="show-dictionary" type="button" class="btn btn-info btn-search">Show Dictionary</button>
+				<br>
+				<div id="data-binding" class="data-binding">
+					<div th:id="${'data-binding-placeholder-'+databinding.id}" name="data-binding-placeholder" class="data-binding-placeholder" th:each=" databinding, dbStat : *{dataBindings}">
+						<input type="hidden" th:field="*{dataBindings[__${dbStat.index}__].id}" tag-id="id" />
+						<span>PlaceHolder</span><input type="text" th:field="*{dataBindings[__${dbStat.index}__].placeholder}" tag-id="placeholder" />
+						<span>Dictionary</span>
+						<select th:field="*{dataBindings[__${dbStat.index}__].dictionary}" tag-id="dictionary">
+							<option th:each="dictionary : ${allDataDictionary}" th:value="${dictionary.id}" th:text="${dictionary.name + ' - ' + dictionary.description}"></option>
+						</select>
+						<div th:onclick="|delDataBinding('data-binding-placeholder-${databinding.id}')|"><h3>×</h3></div>
+					</div>
+				</div>
+				<div id="btn-bind-more" class="btn-bind-more">
+					<button type="button" class="btn btn-info btn-search">Bind More</button>
+				</div>
+                
+                <button class="btn-save btn btn-info btn-search" style="margin-left:44%;margin-top:50px;">
+                	<a>Save Template and Preview</a>
+                </button>
+			</form>
+			
+			<!-- <input id="data-binding-count" type="hidden" th:value="${dataBindingSize}" /> -->
+			<div id="data-binding-placeholder-replacement" style="display:none;">
+				<div id="data-binding-placeholder-index" name="data-binding-placeholder" class="data-binding-placeholder">
+					<span>PlaceHolder</span><input type="text" id="dataBindingsindex.placeholder" name="dataBindings[index].placeholder" />
+					<span>Dictionary</span>
+					<select id="dataBindingsindex.dictionary" name="dataBindings[index].dictionary">
+						<option th:each="dictionary : ${allDataDictionary}" th:value="${dictionary.id}" th:text="${dictionary.name + ' - ' + dictionary.description}"></option>
+					</select>
+					<div onclick="delDataBinding('data-binding-placeholder-index')"><h3>×</h3></div>
+				</div>
+			</div>
+			
+			<div id="data-dictionary-popup" style="display: none;">
+				<span>Dictionary</span>
+				<select id="data-dictionary-popup-choose">
+					<option th:each="dictionary : ${allDataDictionary}" th:value="${dictionary.id}" th:text="${dictionary.name}"></option>
+				</select>
+				<div id="data-dictionary-popup-display"></div>
+				<div id="data-dictionary-popup-hide" style="display:none;">
+					<div th:each="dictionary : ${allDataDictionary}" th:id="${'dictionary-details-' + dictionary.id}">
+						<dl>
+							<dt>Description</dt><dd th:text="${dictionary.description}"></dd>
+							<dt>Category</dt><dd th:text="${dictionary.category}"></dd>
+							<dt>Domain/System ID</dt><dd th:text="${dictionary.sysId}"></dd>
+							<dt>Type</dt><dd th:text="${dictionary.type}"></dd>
+							<dt>Default Value</dt><dd th:text="${dictionary.defaultValue}"></dd>
+							<dt>Format</dt><dd th:text="${dictionary.format}"></dd>
+						</dl>
+					</div>
+				</div>
+			</div>
+        </div>
+        <div th:unless="${exist}">
+            No Such Template.
+        </div>
+		</div>
+		<script>
+		$(document).ready(function (){
+			$("#version-list").change(function (){
+				var version=$(this).children('option:selected').val();
+				var tplId=$("#tpl-id").val();
+				window.location.href="/dashboard/template/history/"+tplId+"/"+version;
+			});
+
+			var firstDictId = $("#data-dictionary-popup-choose").first().val();
+			$("#data-dictionary-popup-display").append($("#dictionary-details-"+firstDictId).html());
+
+			$("#data-dictionary-popup-choose").change(function (){
+				var dictId=$(this).children('option:selected').val();
+				
+				$("#data-dictionary-popup-display").empty();
+				$("#data-dictionary-popup-display").append($("#dictionary-details-"+dictId).html());
+			});
+
+			$("#data-dictionary-popup").dialog({
+				autoOpen: false,
+				show: {
+					effect: "blind",
+					duration: 1000
+				},
+				hide: {
+					effect: "blind",
+					duration: 1000
+				}
+			});
+
+			$("#show-dictionary").click(function (){
+				$("#data-dictionary-popup").dialog("open");
+			});
+
+			// var i=$("#data-binding-count").val();
+        			
+			$('#btn-bind-more').click(function (){
+
+				var i=$("div[name='data-binding-placeholder']").length-1;
+				var replacementHtml = $("#data-binding-placeholder-replacement").html();
+				replacementHtml=replacementHtml.replace(/index/g,i);
+				
+				$('#data-binding').append(replacementHtml);
+			});
+		});
+
+		function delDataBinding(id){
+
+			$("#"+id).remove();
+
+			//reorder names and ids
+			$("#data-binding > div[name='data-binding-placeholder'] > input[tag-id='id']").each(function(index){
+				$(this).attr('id','dataBindings'+index+'.id');
+				$(this).attr('name','dataBindings['+index+'].id');
+			});
+
+			$("#data-binding > div[name='data-binding-placeholder'] > input[tag-id='placeholder']").each(function(index){
+				$(this).attr('id','dataBindings'+index+'.placeholder');
+				$(this).attr('name','dataBindings['+index+'].placeholder');
+			});
+
+			$("#data-binding > div[name='data-binding-placeholder'] > select[tag-id='dictionary']").each(function(index){
+				$(this).attr('id','dataBindings'+index+'.dictionary');
+				$(this).attr('name','dataBindings['+index+'].dictionary');
+			});
+		}
+
+		function htmlDecode(input) {
+            var doc = new DOMParser().parseFromString(input, "text/html");
+            return doc.documentElement.textContent;
+        }
+
+		$("#tpl-form").submit( function(eventObj) {
+
+			console.log($(".ck-content").html());
+
+			var editorHtml = htmlDecode($(".ck-content").html());
+
+			$("<input />").attr("type", "hidden")
+				.attr("id", "content")
+				.attr("name", "content")
+				.attr("value", $(".ck-content").html())
+				.appendTo("#tpl-form");
+
+			$("#tpl-editor").remove();
+			return true;
+		});
+		</script>
+        <script>
+        ClassicEditor
+			.create( document.querySelector( '#tpl-editor' ), {
+				
+				toolbar: {
+                    shouldNotGroupWhenFull: true,
+					items: [
+						'heading',
+						'|',
+						'bold',
+						'italic',
+						'underline',
+						'strikethrough',
+						'bulletedList',
+						'numberedList',
+						'todoList',
+						'horizontalLine',
+						'pageBreak',
+						'|',
+						'indent',
+						'outdent',
+						'alignment',
+						'|',
+						'removeFormat',
+						'specialCharacters',
+						'subscript',
+						'superscript',
+						'fontBackgroundColor',
+						'fontColor',
+						'fontSize',
+						'fontFamily',
+						'highlight',
+						'-',
+						'imageUpload',
+						'imageInsert',
+						'link',
+						'blockQuote',
+						'insertTable',
+						'mediaEmbed',
+						'CKFinder',
+						'htmlEmbed',
+						'|',
+						'undo',
+						'redo'
+					]
+				},
+				language: 'en',
+				image: {
+					toolbar: [
+						'imageTextAlternative',
+						'imageStyle:full',
+						'imageStyle:side'
+					]
+				},
+				table: {
+					contentToolbar: [
+						'tableColumn',
+						'tableRow',
+						'mergeTableCells',
+						'tableCellProperties',
+						'tableProperties'
+					]
+                },
+				licenseKey: '',
+				ckfinder: {
+                    // Upload the images to the server using the CKFinder QuickUpload command.
+                    uploadUrl: '/ckfinder/connector.php?command=QuickUpload&type=Images&responseType=json'
+                }
+			} )
+			.then( editor => {
+				window.editor = editor;
+				window.CKFinder.config({
+					connectorPath: 'ckfinder/connector.php'
+				});
+			} )
+			.catch( error => {
+				console.error( 'Oops, something went wrong!' );
+				console.error( 'Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:' );
+				console.warn( 'Build id: fp1vhlw0nzlf-wtp1c3jpsibh' );
+				console.error( error );
+			} );
+        </script>
+    </body>
+</html>

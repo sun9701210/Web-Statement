@@ -1,0 +1,148 @@
+package webstmt.service.sys;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+
+import webstmt.entity.sys.Template;
+import webstmt.entity.sys.TemplateFolder;
+import webstmt.repo.sys.TemplateFolderRepository;
+import webstmt.repo.sys.TemplateRepository;
+
+@Service
+public class TemplateFolderService {
+	
+	@Autowired
+	private TemplateFolderRepository frepo;
+	@Autowired
+	private TemplateRepository trepo;
+	
+	private List<TemplateFolder> menu;
+	Map<Object,Object> mapArr=new LinkedHashMap<Object,Object>();
+	
+	public TemplateFolder findById(long id)
+	{
+		return frepo.getOne(id);
+	}
+	
+	public List<TemplateFolder> findAllActive()
+	{
+		return frepo.findAllActiveFolder();
+	}
+	
+
+	public List<Object> load(){
+		
+		List<TemplateFolder> rootFolders=frepo.findAll();
+		List<Template> allTemplates=trepo.findAll();
+		
+		int folderCount=0;
+		int templateCount=0;
+		
+		for(TemplateFolder allFolders:rootFolders){
+			
+			if(allFolders.getId()!=rootFolders.size()){
+				folderCount=frepo.countByFolderId(allFolders.getId());
+				allFolders.setFileAmount(folderCount);						
+			}else{
+				for(Template all:allTemplates){	
+					
+					templateCount=trepo.countByFolderId(all.getFolder().getId());	
+					allFolders.setFileAmount(templateCount);
+				
+			}
+			
+		}
+		
+		}	
+						
+		
+		
+		List<Object> menuAll=new ArrayList<Object>();
+		
+		
+		this.menu=rootFolders;
+		
+		for(TemplateFolder root:rootFolders){			
+							
+			if(root.getId().equals((long)1)){
+				
+				mapArr.put("id", root.getId());
+				mapArr.put("name", root.getName());
+				mapArr.put("description", root.getDescription());
+				mapArr.put("fileAmount", root.getFileAmount());
+				
+				mapArr.put("child", childList(root.getId()));
+				
+				menuAll.add(mapArr);
+			}	
+			                                                                            
+					
+			
+		}
+		
+		
+		
+		return menuAll;
+		
+	}
+
+	private List<Object> childList(Long id) {
+		
+		List<Object> lists=new ArrayList<Object>();
+		List<Template> allTemplates=trepo.findAll();
+		
+		for(TemplateFolder tf:menu){
+			
+			Map<Object,Object> childArr=new LinkedHashMap<Object,Object>();
+			
+			if(tf.getParent()!=null&&tf.getParent().getId().equals(id)){
+					
+				childArr.put("id", tf.getId());
+				childArr.put("name", tf.getName());
+				childArr.put("description", tf.getDescription());
+				childArr.put("fileAmount", tf.getFileAmount());				
+				
+				childArr.put("child", childList(tf.getId()));
+				lists.add(childArr);
+				
+			}
+			List<String> childrenList=new ArrayList<String>();
+			
+			for(Template all:allTemplates){
+				
+				if(tf.getName()==all.getFolder().getName()){ 
+					
+					childrenList.add(all.getOppm());
+					
+					for(int i=0;i<allTemplates.size();i++){
+						
+						System.out.println(childrenList);
+						
+						childArr.put("childrenList", childrenList);
+						
+					}
+					
+					
+				}	
+				
+				
+			}
+			
+		}
+
+		
+		return lists;
+	}
+	
+	
+	
+	
+
+}

@@ -1,0 +1,5 @@
+package webstmt.entity.sys.datasource;
+
+public enum DictionaryCategory {
+	RM_Demographic_C_Level, RM_Demographic_R_Level, IM_Account_Info, SB_Account_Info
+}

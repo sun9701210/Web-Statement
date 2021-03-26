@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+        <title>Web Statement - Template Edit Result</title>
+    </head>
+    <body>
+        <p th:text="${result}"></p>
+    </body>
+</html>

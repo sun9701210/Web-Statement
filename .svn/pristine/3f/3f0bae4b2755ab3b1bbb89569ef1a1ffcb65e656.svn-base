@@ -1,0 +1,1 @@
+insert into DATA_DICTIONARY values ('4','RM_Demographic_R_Level', '410078605','Relationship number', 'INT', 'RELN_NUM','RM','Integer');

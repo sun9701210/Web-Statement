@@ -1,0 +1,15 @@
+package webstmt.repo.sys;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import webstmt.entity.sys.Template;
+
+@Repository
+public interface TemplateRepository extends JpaRepository<Template, Long> 
+{
+	@Query("select t from Template t where t.name = : tName")
+	Template getByName(@Param("tName")String templateName);
+}

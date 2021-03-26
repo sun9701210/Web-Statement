@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+        <title>Web Statement - Template Management</title>
+         <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>      
+       <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>        
+        <script src="https://cdn.jsdelivr.net/npm/smartwizard@5.1.1/dist/js/jquery.smartWizard.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+       	
+       	<link rel="stylesheet" type="text/css" href="/easyui/themes/default/easyui.css">
+		<link rel="stylesheet" type="text/css" href="/easyui/themes/icon.css">
+       	<script type="text/javascript" src="/easyui/jquery.easyui.min.js"></script>
+       		
+    </head>
+    <body>
+    <div th:include="dashboard/com/navbar :: navbar"></div>
+    	<br>
+    	
+    	
+         
+         <div id="tree" class="col-md-2" style="height:500px;float:left;white-space: nowrap; overflow: auto;state:closed;">
+          	<ul class="easyui-tree" data-options="
+					url:'tree_data1.json',
+					method:'get',
+					animate:true,
+					formatter:function(node){
+						var s = node.text;
+						if (node.children){
+							s += ' <span style=\'color:blue\'>(' + node.children.length + ')</span>';
+						}
+						return s;
+					}
+				">
+		        <li>
+		        
+		            <span>HK Advice</span>
+		            <ul>
+		                <li>
+		                    <span>AM</span>
+		                    <ul>
+								 <li>
+		                        		<span><span id="levelt">AM416</span>&#12288;<img src="http://www.jeasyui.com/easyui/themes/icons/search.png" onclick="treeSearch()" style="cursor:pointer;"></span>
+		                        		<ul>
+		                        				<li>
+		                        				
+													<span>Baseline</span>	</li>
+												<li>	<span>A-1234567</span></li>
+												<li>	<span>A-2468088</span>					                        				
+					                    	</li>
+					                    </ul>
+					             </li>
+					                  	
+		                        
+		                     </ul>  
+		                       <ul>
+								 <li>
+		                        		<span>AM844</span>
+		                        			<ul>
+		                        				<li>
+		                        					
+						                        	 <span>CONFIRMATION LETTER-BIL</span>					                        		
+						                    		
+					                    	</li>
+					                    </ul>
+					             </li>
+					                  	
+		                        
+		                     </ul> 
+		                     <ul>
+								 <li>
+		                        		<span>AM850</span>
+		                        			<ul>
+		                        				<li>
+		                        					
+						                        	<span>LOANS-1ST REMINDER(7 DAYS PAST DUE)</span>					                        		
+						                    		
+					                    	</li>
+					                    </ul>
+					             </li>
+					                  	
+		                        
+		                     </ul>
+		                     <ul>
+								 <li>
+		                        		<span>AM851</span>
+		                        			<ul>
+		                        				<li>
+		                        					
+						                        	
+						                        		<span>LOANS-2ND REMINDER(14 DAYS PAST DUE)</span>					                        		
+						                    		
+					                    	</li>
+					                    </ul>
+					             </li>
+					                  	
+		                        
+		                     </ul>
+		                     <ul>
+								 <li>
+		                        		<span>AM852</span>
+		                        			<ul>
+		                        				<li>
+		                        					
+						                        	
+						                        		<span>NEW LOAN BOOKING LETTER-BRC</span>					                        		
+						                    		
+					                    	</li>
+					                    </ul>
+					             </li>
+					                  	
+		                        
+		                     </ul>
+		                     <ul>
+								 <li>
+		                        		<span>AM853</span>
+		                        			<ul>
+		                        				<li>
+		                        					
+						                        	 
+						                        		<span>OVER LIMIT(7 DAYS PAST DUE)</span>					                        		
+						                    		
+					                    	</li>
+					                    </ul>
+					             </li>
+					                  	
+		                        
+		                     </ul>
+		                     <ul>
+								 <li>
+		                        		<span>AM854</span>
+		                        			<ul>
+		                        				<li>						                        	 
+						                        		<span>OVER LIMIT(14 DAYS PAST DUE)</span>					                        								                    		
+					                    	</li>
+					                    </ul>
+					             </li>
+					                  	
+		                        
+		                     </ul>
+		                     <ul>
+								 <li>
+		                        		<span>AM855</span>
+		                        			<ul>
+		                        				<li>
+		             
+						                        		<span>RENEWAL NOTIFICATION LETTER</span>					                        		
+						                    		
+					                    	</li>
+					                    </ul>
+					             </li>
+					                  	
+		                        
+		                     </ul>
+		                     <ul>
+								 <li>
+		                        		<span>AM856</span>
+		                        			<ul>
+		                        				<li>
+		                        					<span>AMHK9</span>
+						                        	 <ul>
+						                        		<li><span>CANCELLATION WITH OUTSTANDING</span></li>					                        		
+						                    		</ul>
+					                    	</li>
+					                    </ul>
+					             </li>
+					                  	
+		                        
+		                     </ul>
+		                     <ul>
+								 <li>
+		                        		<span>AM876</span>
+		                        			<ul>
+		                        				<li>
+		                        					<span>AMHK9</span>
+						                        	 <ul>
+						                        		<li><span>EXCESSIVE PAYMENT PENALYT LETTER</span></li>					                        		
+						                    		</ul>
+					                    	</li>
+					                    </ul>
+					             </li>
+					                  	
+		                        
+		                     </ul>
+		                     <ul>
+								 <li>
+		                        		<span>AM879</span>
+		                        			<ul>
+		                        				<li>
+		                        					<span>AMHK9</span>
+						                        	 <ul>
+						                        		<li><span>OCCUPANCY CONFIRMATION LETTER</span></li>					                        		
+						                    		</ul>
+					                    	</li>
+					                    </ul>
+					             </li>
+					                  	
+		                        
+		                     </ul>
+		                     
+		                     <ul>
+								 <li>
+		                        		<span>AM883</span>
+		                        			<ul>
+		                        				<li>
+		                        					<span>AMHK9</span>
+						                        	 <ul>
+						                        		<li><span>INTEREST RATE CHANGE LETTER-FLEXU MORTGAGE</span></li>					                        		
+						                    		</ul>
+					                    	</li>
+					                    </ul>
+					             </li>
+					                  	
+		                        
+		                     </ul>
+		                     <ul>
+								 <li>
+		                        		<span>AM89A</span>
+		                        			<ul>
+		                        				<li>
+		                        					<span>AMHK9</span>
+						                        	 <ul>
+						                        		<li><span>NEW LOAN LETTER FOR SCHEDULE LOAN</span></li>					                        		
+						                    		</ul>
+					                    	</li>
+					                    </ul>
+					             </li>
+					                  	
+		                        
+		                     </ul>
+		                   
+		                     <ul>
+								 <li>
+		                        		<span>AM89B</span>
+		                        			<ul>
+		                        				<li>
+		                        					<span>AMHK9</span>
+						                        	 <ul>
+						                        		<li><span>RATE CHANGE LETTER FOR SCHEDULE LOAN</span></li>					                        		
+						                    		</ul>
+					                    	</li>
+					                    </ul>
+					             </li>
+					                  	
+		                        
+		                     </ul> 
+		                     
+		                     <ul><li><span>AM891</span><ul><li><span>AMHK9</span><ul><li><span>NEW LOAN LETTER FOR SCHEDULE LOAN</span></li></ul></li></ul></li></ul>
+		                     <ul><li><span>AM892</span><ul><li><span>AMHK9</span><ul><li><span>RATE CHANGE LETTER FOR SCHEDULE LOAN</span></li></ul></li></ul></li></ul>
+		                     <ul><li><span>AM901</span><ul><li><span>AMHK9</span><ul><li><span>INTERNAL AUTO DEBIT ENROLMENT</span></li></ul></li></ul></li></ul>
+		                     <ul><li><span>AM910</span><ul><li><span>AMHK9</span><ul><li><span>CLOSE LOAN LETTER</span></li></ul></li></ul></li></ul>
+		                     <ul><li><span>AM915</span><ul><li><span>AMHK9</span><ul><li><span>REASSIGNMENT LETTER</span></li></ul></li></ul></li></ul>
+		                     <ul><li><span>AM916</span><ul><li><span>AMHK9</span><ul><li><span>New Loan Letter (Universal Life)</span></li></ul></li></ul></li></ul>
+		                     <ul><li><span>AM917</span><ul><li><span>AMHK9</span><ul><li><span>Payment notification letter (Universal Life)</span></li></ul></li></ul></li></ul>
+		                     <ul><li><span>AM918</span><ul><li><span>AMHK9</span><ul><li><span>Close loan letter (Universal Life)</span></li></ul></li></ul></li></ul>
+		                     <ul><li><span>AM919</span><ul><li><span>AMHK9</span><ul><li><span>Payoff Quotation letter (Universal Life)</span></li></ul></li></ul></li></ul> 
+		                     <ul><li><span>AM924</span><ul><li><span>AMHK9</span><ul><li><span>INTEREST RATE CHANGE LETTER(ACA-PDO)</span></li></ul></li></ul></li></ul> 
+		                     <ul><li><span>AM929</span><ul><li><span>AMHK9</span><ul><li><span>INTEREST RATE CHANGE LETTER</span></li></ul></li></ul></li></ul> 
+		                     <ul><li><span>AM930</span><ul><li><span>AMHK9</span><ul><li><span>Int Rate Change Letter for Premium Financing</span></li></ul></li></ul></li></ul> 
+		                     <ul><li><span>AM931</span><ul><li><span>AMHK9</span><ul><li><span>SETTLEMENT QUOTATION LETTER CUSTOMER</span></li></ul></li></ul></li></ul> 
+		                     <ul><li><span>AM932</span><ul><li><span>AMHK9</span><ul><li><span>SETTLEMENT QUOTATION LETTER SOLICITOR</span></li></ul></li></ul></li></ul> 
+		                     <ul><li><span>AM933</span><ul><li><span>AMHK9</span><ul><li><span>LINE CANCEL DUE TO DELINQUENT</span></li></ul></li></ul></li></ul> 
+		                     <ul><li><span>AM934</span><ul><li><span>AMHK9</span><ul><li><span>RENEWAL CONFIRMATION LETTER</span></li></ul></li></ul></li></ul> 
+		                     <ul><li><span>AM935</span><ul><li><span>AMHK9</span><ul><li><span>LINE CANCEL DUE TO CUSTOMER</span></li></ul></li></ul></li></ul> 
+		                     <ul><li><span>AM937</span><ul><li><span>AMHK9</span><ul><li><span>Portfolio Power - Facility setup letter</span></li></ul></li></ul></li></ul> 
+		                     <ul><li><span>AM938</span><ul><li><span>AMHK9</span><ul><li><span>PortfolioPower by IN Facility setup letter</span></li></ul></li></ul></li></ul> 
+		                     <ul><li><span>AM998</span><ul><li><span>AMHK9</span><ul><li><span>Close loan letter for IP</span></li></ul></li></ul></li></ul>
+		                    </ul>
+		                     <ul>
+		               		<li><span>CB</span>
+		               		<ul><li><span>CB001</span><ul><li><span>CBNOT</span><ul><li><span>CBOL Banking User ID Change Notification</span></li></ul></li></ul></li></ul>
+		               		<ul><li><span>CB002</span><ul><li><span>CBNOT</span><ul><li><span>CBOL Banking PW Change/Reset&Unclock</span></li></ul></li></ul></li></ul>
+		               		<ul><li><span>CB003</span><ul><li><span>CBNOT</span><ul><li><span>CBOL Banking User ID&PW Setup Notification</span></li></ul></li></ul></li></ul>
+		               </li>
+		               </ul>
+		                    <ul>
+		               		<li><span>CL</span>
+		               		<ul><li><span>CL001</span><ul><li><span>CLINS</span><ul><li><span>   </span></li></ul></li></ul></li></ul>
+		               		<ul><li><span>CL002</span><ul><li><span>CLINS</span><ul><li><span>   </span></li></ul></li></ul></li></ul>
+		               		<ul><li><span>CL003</span><ul><li><span>CLINS</span><ul><li><span>   </span></li></ul></li></ul></li></ul>
+		               		<ul><li><span>CL884</span><ul><li><span>CLINS</span><ul><li><span>   </span></li></ul></li></ul></li></ul>
+		               		<ul><li><span>CL930</span><ul><li><span>CLINS</span><ul><li><span>   </span></li></ul></li></ul></li></ul>
+		               		<ul><li><span>CL966</span><ul><li><span>CLINS</span><ul><li><span>   </span></li></ul></li></ul></li></ul>
+		               		<ul><li><span>CL981</span><ul><li><span>CLINS</span><ul><li><span>   </span></li></ul></li></ul></li></ul>
+		               		<ul><li><span>CL982</span><ul><li><span>CLINS</span><ul><li><span>   </span></li></ul></li></ul></li></ul>
+		               </li>
+		               </ul>
+		                    <ul>
+		               		<li><span>CP</span>
+		               		<ul><li><span>CPAVA</span><ul><li><span>CPADV</span><ul><li><span>  </span></li></ul></li></ul></li></ul>
+		               		<ul><li><span>CPAVB</span><ul><li><span>CPADV</span><ul><li><span>  </span></li></ul></li></ul></li></ul>
+		               		<ul><li><span>CPAV1</span><ul><li><span>CPADV</span><ul><li><span>  </span></li></ul></li></ul></li></ul>
+		               		<ul><li><span>CPAV2</span><ul><li><span>CPADV</span><ul><li><span>  </span></li></ul></li></ul></li></ul>
+		               		<ul><li><span>CPAV3</span><ul><li><span>CPADV</span><ul><li><span>  </span></li></ul></li></ul></li></ul>
+		               		<ul><li><span>CPAV5</span><ul><li><span>CPADV</span><ul><li><span>  </span></li></ul></li></ul></li></ul>
+		               </li>
+		               </ul>
+		               <ul>
+		               		<li><span>FG</span>
+		               		<ul><li><span>FGI1C</span><ul><li><span>FGI1C</span><ul><li><span>  </span></li></ul></li></ul></li></ul>
+		               		<ul><li><span>FGI1P</span><ul><li><span>FGI1C</span><ul><li><span>  </span></li></ul></li></ul></li></ul>
+		               		<ul><li><span>FGO01</span><ul><li><span>FGI1C</span><ul><li><span>  </span></li></ul></li></ul></li></ul>
+		               </li>
+		               </ul>
+		               <ul>
+		               		<li><span>FT</span>
+		               		<ul><li><span>FTDT1</span><ul><li><span>FGI1C</span><ul><li><span>  </span></li></ul></li></ul></li></ul>
+		               		<ul><li><span>FTDT3</span><ul><li><span>FGI1C</span><ul><li><span>  </span></li></ul></li></ul></li></ul>
+		               		<ul><li><span>FTD2C</span><ul><li><span>FGI1C</span><ul><li><span>  </span></li></ul></li></ul></li></ul>
+		               </li>
+		               </ul>
+		               <ul>
+		               		<li><span>IM</span>
+		               		<ul><li><span>IMHS1</span><ul><li><span>FGI1C</span><ul><li><span>  </span></li></ul></li></ul></li></ul>
+		               		<ul><li><span>IMIN6</span><ul><li><span>FGI1C</span><ul><li><span>  </span></li></ul></li></ul></li></ul>
+		               		<ul><li><span>IMNB2</span><ul><li><span>FGI1C</span><ul><li><span>  </span></li></ul></li></ul></li></ul>
+		               </li>
+		               </ul>
+		               <ul>
+		               		<li><span>IT</span>
+		               		<ul><li><span>ITDD1</span><ul><li><span>FGI1C</span><ul><li><span>  </span></li></ul></li></ul></li></ul>
+		               		<ul><li><span>ITE1I</span><ul><li><span>FGI1C</span><ul><li><span>  </span></li></ul></li></ul></li></ul>
+		               		<ul><li><span>ITE2I</span><ul><li><span>FGI1C</span><ul><li><span>  </span></li></ul></li></ul></li></ul>
+		               </li>
+		               </ul>
+		               <ul>
+		               		<li><span>MD</span>
+		               		<ul><li><span>MDAFX</span><ul><li><span>FGI1C</span><ul><li><span>  </span></li></ul></li></ul></li></ul>
+		               		<ul><li><span>MDATX</span><ul><li><span>FGI1C</span><ul><li><span>  </span></li></ul></li></ul></li></ul>
+		               		<ul><li><span>MDFTX</span><ul><li><span>FGI1C</span><ul><li><span>  </span></li></ul></li></ul></li></ul>
+		               </li>
+		               </ul>
+		               <ul>
+		               		<li><span>MF</span>
+		               		<ul><li><span>FGI1C</span><ul><li><span>FGI1C</span><ul><li><span>  </span></li></ul></li></ul></li></ul>
+		               		<ul><li><span>FGI1P</span><ul><li><span>FGI1C</span><ul><li><span>  </span></li></ul></li></ul></li></ul>
+		               		<ul><li><span>FGO01</span><ul><li><span>FGI1C</span><ul><li><span>  </span></li></ul></li></ul></li></ul>
+		               </li>
+		               </ul>
+		               <ul>
+		               		<li><span>MX</span>
+		               		<ul><li><span>FGI1C</span><ul><li><span>FGI1C</span><ul><li><span>  </span></li></ul></li></ul></li></ul>
+		               		<ul><li><span>FGI1P</span><ul><li><span>FGI1C</span><ul><li><span>  </span></li></ul></li></ul></li></ul>
+		               		<ul><li><span>FGO01</span><ul><li><span>FGI1C</span><ul><li><span>  </span></li></ul></li></ul></li></ul>
+		               </li>
+		               </ul>
+		               <ul>
+		               		<li><span>OS</span>
+		               		<ul><li><span>FGI1C</span><ul><li><span>FGI1C</span><ul><li><span>  </span></li></ul></li></ul></li></ul>
+		               		<ul><li><span>FGI1P</span><ul><li><span>FGI1C</span><ul><li><span>  </span></li></ul></li></ul></li></ul>
+		               		<ul><li><span>FGO01</span><ul><li><span>FGI1C</span><ul><li><span>  </span></li></ul></li></ul></li></ul>
+		               </li>
+		               </ul>
+		                <ul>
+		               		<li><span>RE</span>
+		               		<ul><li><span>FGI1C</span><ul><li><span>FGI1C</span><ul><li><span>  </span></li></ul></li></ul></li></ul>
+		               		
+		               </li>
+		               </ul>
+		                <ul>
+		               		<li><span>RF</span>
+		               		<ul><li><span>FGI1C</span><ul><li><span>FGI1C</span><ul><li><span>  </span></li></ul></li></ul></li></ul>
+		               		<ul><li><span>FGI1P</span><ul><li><span>FGI1C</span><ul><li><span>  </span></li></ul></li></ul></li></ul>
+		               		<ul><li><span>FGO01</span><ul><li><span>FGI1C</span><ul><li><span>  </span></li></ul></li></ul></li></ul>
+		               </li>
+		               </ul>
+		                <ul>
+		               		<li><span>RM</span>
+		               		<ul><li><span>FGI1C</span><ul><li><span>FGI1C</span><ul><li><span>  </span></li></ul></li></ul></li></ul>
+		               		<ul><li><span>FGI1P</span><ul><li><span>FGI1C</span><ul><li><span>  </span></li></ul></li></ul></li></ul>
+		               		<ul><li><span>FGO01</span><ul><li><span>FGI1C</span><ul><li><span>  </span></li></ul></li></ul></li></ul>
+		               </li>
+		               </ul>
+		                <ul>
+		               		<li><span>SB</span>
+		               		<ul><li><span>FGI1C</span><ul><li><span>FGI1C</span><ul><li><span>  </span></li></ul></li></ul></li></ul>
+		               		<ul><li><span>FGI1P</span><ul><li><span>FGI1C</span><ul><li><span>  </span></li></ul></li></ul></li></ul>
+		               		<ul><li><span>FGO01</span><ul><li><span>FGI1C</span><ul><li><span>  </span></li></ul></li></ul></li></ul>
+		               </li>
+		               </ul>
+		                <ul>
+		               		<li><span>SD</span>
+		               		<ul><li><span>FGI1C</span><ul><li><span>FGI1C</span><ul><li><span>  </span></li></ul></li></ul></li></ul>
+		               		<ul><li><span>FGI1P</span><ul><li><span>FGI1C</span><ul><li><span>  </span></li></ul></li></ul></li></ul>
+		               		<ul><li><span>FGO01</span><ul><li><span>FGI1C</span><ul><li><span>  </span></li></ul></li></ul></li></ul>
+		               </li>
+		               </ul>
+		                <ul>
+		               		<li><span>TR</span>
+		               		<ul><li><span>FGI1C</span><ul><li><span>FGI1C</span><ul><li><span>  </span></li></ul></li></ul></li></ul>
+		               		<ul><li><span>FGI1P</span><ul><li><span>FGI1C</span><ul><li><span>  </span></li></ul></li></ul></li></ul>
+		               		<ul><li><span>FGO01</span><ul><li><span>FGI1C</span><ul><li><span>  </span></li></ul></li></ul></li></ul>
+		               </li>
+		               </ul>
+		               <ul>
+		               		<li><span>WM</span>
+		               		<ul><li><span>WMAV1</span><ul><li><span>WMAV1</span><ul><li><span>  </span></li></ul></li></ul></li></ul>
+		               		<ul><li><span>WMAV2</span><ul><li><span>WMAV2</span><ul><li><span>  </span></li></ul></li></ul></li></ul>
+		               		<ul><li><span>WMAV3</span><ul><li><span>WMAV3</span><ul><li><span>  </span></li></ul></li></ul></li></ul>
+		               </li>
+		               </ul>
+		                </li>
+		              
+		    		</ul>
+				</li>
+        </div>
+        
+        <div class="col-md-9 ml-5" style="float:left;">
+        <h2>Templates</h2>
+            <div class="input-group col-md-3 ml-auto" style="margin-top:-40px;">
+        	<input type="text" class="form-control"placeholder="input Name here" / >
+        	<span class="input-group-btn">
+        		<button class="btn btn-info btn-search" th:onclick="search()">Search</button>
+        	</span>
+        	
+        </div>
+        <br>
+        <br>
+        <table class="table">
+        <thead>
+        	 <tr>
+				<th>Advice Type</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Ref OPPM</th>
+				<th>Last Updated By</th>
+				<th>Last Updated At</th>
+                <th>Operation</th>
+            </tr>
+        </thead>
+        <tbody id="tb">
+			<tr th:each="template: ${templates}">
+				<td th:text="${template.folder.name}"></td>
+				<td th:text="${template.name}"></td>
+				<td th:text="${template.description}"></td>
+				<td th:text="${template.oppm}"></td>
+				<td th:text="${template.lastUpdatedBy}"></td>
+				<td th:text="${template.lastUpdatedTime}"></td>
+				<td>
+					<a th:href="@{'/dashboard/template/preview/' + ${template.id} }">Preview</a>&nbsp;
+					<a th:href="@{'/dashboard/template/edit/' + ${template.id} }">Edit</a>&nbsp;
+					<a href="#" th:onclick="remove([[${template.id}]])">Remove</a>&nbsp;
+				</td>
+			</tr>
+			<tr> 
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+        </tbody>
+            
+        </table>
+        <button class="btn btn-info btn-search">
+        	<a href="/dashboard/template/new" style="color:white; text-decoration:none;">Create New Template</a>
+        </button>
+        </div>
+       <script th:inline="none">
+       function remove(id){
+ 			
+ 			if(confirm("Are you sure to remove it?")){
+ 				$.ajax({ 				
+ 					url:"/dashboard/template/remove",
+ 					data:{id:id},
+ 					type:'DELETE',
+ 					dataType:'text',
+ 					success:function(re){
+ 						if(re){
+ 							alert("Successfully remove！");
+ 							window.location.reload(true);
+ 						}
+ 					}
+ 				});
+
+ 		};
+       };
+       function search(){  	  
+ 			var templateName=$(".form-control").val();			
+ 				$.ajax({
+ 	  				url:"/dashboard/template/search",
+ 	  				type:'GET',
+ 	  				data:{templateName:templateName},
+ 	  			 	
+ 	  				success:function(data){
+ 	  				
+ 	  						$("#tb").empty();
+ 	  						
+							var str="";
+							
+							for(var i=0;i<data.length;i++){
+								 str+='<tr><td>'+data[i].name+'</td>'+
+			                        '<td>'+data[i].description+'</td>'+
+			                        '<td>'+'<a href="/dashboard/template/edit/'+data[i].id+'">Edit</a>'+
+			                        '<td>'+'<a href="#" onclick="remove('+data[i].id+')">Remove</a>'+
+			                        '</td></tr>'; 
+							}
+	                       
+	                        $("#tb").append(str);
+ 	  					
+ 	  						
+						},
+						                  	  			 
+ 			}); 
+ 			
+ 		};
+ 	/*	function load(){
+ 			var parentId=$("#tree").val();	
+ 			
+ 			$.ajax({
+ 				url:"/dashboard/templateFolder/load",
+ 	  			type:'GET',
+ 	  			data:{parentId:parentId},
+ 	  			success:function(data){
+ 	  				alert(parentId);
+ 	  			},
+ 			});
+ 			
+ 		}*/
+ 		function treeSearch(){
+ 			var target=$("#levelt").text();
+ 			alert(target);
+ 			
+ 			
+ 			
+ 			
+ 			
+ 		}
+       </script>
+    </body>
+</html>

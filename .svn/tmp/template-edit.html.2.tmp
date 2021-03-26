@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+        <title>Web Statement - New Template</title>
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+        <script src="/ckeditor.js"></script>
+        <script src="/static/ckfinder/ckfinder.js"></script>      
+        <script src="https://ckeditor.com/apps/ckfinder/3.5.1/ckfinder.js"></script>
+         <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>      
+       <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>        
+        <script src="https://cdn.jsdelivr.net/npm/smartwizard@5.1.1/dist/js/jquery.smartWizard.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+       <style type="text/css">
+	        #DB{
+	        	width:83%;
+				height: 400px;
+				border: var(--ck-color-base-border) solid 1px;
+				float: left;
+				position: absolute;
+				white-space: nowrap; 
+				overflow: auto;
+			}
+			#DBP{
+				width: 100%;
+				height: 320px;
+				white-space: nowrap; 
+				overflow: auto;
+			}
+			#PH{
+				width: 100%;
+				height: 100px;
+				line-height: 40px;
+				float: left;
+				margin-top:30px;
+				border-bottom: #f2f2f2 solid 1px;
+				
+			}
+			.PHH{
+				width: 100%;
+				height: 100px;
+				line-height: 40px;
+				float: left;
+				margin-top:30px;
+				border-bottom: #f2f2f2 solid 1px;
+				
+			}
+			#text{
+				width:200px;
+				height:25px;
+			}
+			#btn{
+				margin-top: 350px;
+				margin-left:45%;
+				position: relative;
+			}
+			#rebtn{
+				width:20px;
+				height:20px;
+				margin-left:99%;
+				float:left;
+				color:var(--ck-color-base-border);
+				margin-top:-105px;
+				cursor:pointer;
+			}
+	</style>
+    </head>
+    <body>
+    <div th:include="dashboard/com/navbar :: navbar"></div>
+    <div class="container">
+        <div th:if="${exist}">
+			<h3>Edit Template</h3>
+			<label for="version-list">Version</label>
+			<select id="version-list">
+				<option selected value="">Current</option>
+				<option th:each="version:${template.versions}" th:value="${version.UUID}" th:text="${version.UUID} + ' - ' + ${version.maker} + '@' + ${version.savedTime}"></option>
+			</select>
+            <form id="tpl-form" action="#" th:action="@{'/dashboard/template/edit/' + ${template.id} }" method="post"><br>
+				<input type="hidden" id="tpl-id" name="tpl-id" th:value="${template.id}" />
+				<label for="tpl-name">Name</label><br>
+                <input type="text" id="tpl-name" name="tpl-name" th:value="${template.name}" /><br><br>
+                <label for="tpl-ref">Reference OPPM#</label><br>
+                <input type="text" id="tpl-ref" name="tpl-ref" th:value="${template.oppm}" /><br><br>
+                <label for="tpl-desc">Description</label><br>
+                <textarea id="tpl-desc" name="tpl-desc" th:text="${template.description}"></textarea><br><br>
+                <label for="editor">Template</label><br>
+                <textarea name="tpl-editor" id="tpl-editor" th:text="${template.template}">
+                   This is some sample content.
+                </textarea>
+                <br>
+                <br>
+                <p>DataBinding</p>
+				<div id="DB">
+				<div class="container">
+				<div id="DBP">
+				<div id="PH">
+					
+					&#12288;Category :&nbsp;<select>
+												<option> Customer Profile</option>
+												<option>Finance</option>
+											</select>&#12288;
+					&nbsp;Domian/System ID :&nbsp;<select>
+													<option>RM</option>
+													<option>IM</option>
+													<option>ALS</option>
+													</select>&#12288;
+					&nbsp;Type :&nbsp;<select>
+												<option>Text</option>
+												<option>Integer</option>
+												<option>Decimal</option>
+												</select>&#12288;
+					&nbsp;Dictionary :&nbsp;<select>
+													<option>RELN_NUM - Direct relationship number</option>
+													<option>IM_ACCT_NO_SA - IMPACS saving account no.</option>
+													<option>PRI_CUST_NUM - Primary customer number</option>
+												</select>
+				 <br>
+				 
+				 &#12288;PlaceHolder : <input type="text" id="text"/>
+				 
+				</div>
+				</div>
+				<br/>
+				</div>
+		
+				</div>
+					<div id="btn">
+						<button type="button" class="btn btn-info btn-search">Bind More</button>
+					</div>
+                
+                <button class="btn btn-info btn-search" style="margin-left:44%;margin-top:50px;">
+                	<a>Save Template</a>
+                </button>
+                <br>
+                <br>
+            </form>
+        </div>
+        <div th:unless="${exist}">
+            No Such Template.
+        </div>
+		</div>
+		<script>
+		$(document).ready(function (){
+			$("#version-list").change(function (){
+				var version=$(this).children('option:selected').val();
+				var tplId=$("#tpl-id").val();
+				window.location.href="/dashboard/template/history/"+tplId+"/"+version;
+			})
+		})
+		</script>
+        <script>
+        ClassicEditor
+			.create( document.querySelector( '#tpl-editor' ), {
+				
+				toolbar: {
+                    shouldNotGroupWhenFull: true,
+					items: [
+						'heading',
+						'|',
+						'bold',
+						'italic',
+						'underline',
+						'strikethrough',
+						'bulletedList',
+						'numberedList',
+						'todoList',
+						'horizontalLine',
+						'pageBreak',
+						'|',
+						'indent',
+						'outdent',
+						'alignment',
+						'|',
+						'removeFormat',
+						'specialCharacters',
+						'subscript',
+						'superscript',
+						'fontBackgroundColor',
+						'fontColor',
+						'fontSize',
+						'fontFamily',
+						'highlight',
+						'-',
+						'imageUpload',
+						'imageInsert',
+						'link',
+						'blockQuote',
+						'insertTable',
+						'mediaEmbed',
+						'CKFinder',
+						'htmlEmbed',
+						'|',
+						'undo',
+						'redo'
+					]
+				},
+				language: 'en',
+				image: {
+					toolbar: [
+						'imageTextAlternative',
+						'imageStyle:full',
+						'imageStyle:side'
+					]
+				},
+				table: {
+					contentToolbar: [
+						'tableColumn',
+						'tableRow',
+						'mergeTableCells',
+						'tableCellProperties',
+						'tableProperties'
+					]
+                },
+				licenseKey: '',
+				ckfinder: {
+                    // Upload the images to the server using the CKFinder QuickUpload command.
+                    uploadUrl: '/ckfinder/connector.php?command=QuickUpload&type=Images&responseType=json'
+                }
+			} )
+			.then( editor => {
+				window.editor = editor;
+				window.CKFinder.config({
+					connectorPath: 'ckfinder/connector.php'
+				});
+			} )
+			.catch( error => {
+				console.error( 'Oops, something went wrong!' );
+				console.error( 'Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:' );
+				console.warn( 'Build id: fp1vhlw0nzlf-wtp1c3jpsibh' );
+				console.error( error );
+			} );
+	        	
+			$(function (){
+        			var i=0;
+        			
+	    			$ ('#btn').click (function (){
+	    				i++;
+						$('#DBP').append(
+							'<div class="container">'+
+							'<div class="PHH">'+
+							'<div id="PHH'+i+'" class="delPHH">'+	    				
+							
+							'Category : &nbsp;<select>'+
+													'<option> Customer Profile</option>'+
+													'<option>Finance</option>'+
+											'</select>&#12288;'+
+							'Domian/System ID :&nbsp;<select>'+
+														'<option>RM</option>'+
+														'<option>IM</option>'+
+														'<option>ALS</option>'+
+													'</select>&#12288;'+
+							'Type :&nbsp;<select>'+
+													'<option>Text</option>'+
+													'<option>Integer</option>'+
+													'<option>Decimal</option>'+
+													'</select>&#12288;'+
+													
+							'&nbsp;Dictionary :&nbsp;<select>'+												
+													'<option>RELN_NUM - Direct relationship number</option>'+
+													'<option>IM_ACCT_NO_SA - IMPACS saving account no.</option>'+
+													'<option>PRI_CUST_NUM - Primary customer number</option>'+											
+													'</select>'+
+													'<br/>'+
+							'PlaceHolder : <input type="text" id="text"/>&#12288;'+
+							'<br/>'+
+							'<div id="rebtn" onclick="del('+'PHH'+i+')"><h3>×</h3></div>'+
+							'</div>'+
+							'</div>'+
+							'</div>'
+						
+						);
+	    			});
+	    			$('#DBP').append(
+	    				'<div class="container">'+
+	    				
+	    				'<div id="PHH'+i+'" class="PHH">'+	    				
+	    				
+	    				'Category : &nbsp;<select>'+
+												'<option> Customer Profile</option>'+
+												'<option>Finance</option>'+
+										  '</select>&#12288;'+
+	    				'Domian/System ID :&nbsp;<select>'+
+													'<option>RM</option>'+
+													'<option>IM</option>'+
+													'<option>ALS</option>'+
+												 '</select>&#12288;'+
+	    				'Type :&nbsp;<select>'+
+												'<option>Text</option>'+
+												'<option>Integer</option>'+
+												'<option>Decimal</option>'+
+												'</select>&#12288;'+
+												
+						'&nbsp;Dictionary :&nbsp;<select>'+												
+												'<option>RELN_NUM - Direct relationship number</option>'+
+												'<option>IM_ACCT_NO_SA - IMPACS saving account no.</option>'+
+												'<option>PRI_CUST_NUM - Primary customer number</option>'+											
+												'</select>'+
+												'<br/>'+
+						'PlaceHolder : <input type="text" id="text"/>&#12288;'+
+						'<br/>'+
+						'<div id="rebtn" onclick="del('+'PHH'+i+')"><h3>×</h3></div>'+
+	    				'</div>'+
+	    				
+	    				'</div>'
+	    			
+	    			);
+	    			
+	    		});
+	    		});
+        		
+        		function del(obj){        			
+        			
+        			$(obj).hide();
+        			  
+        		}
+        		
+        </script>
+    </body>
+</html>

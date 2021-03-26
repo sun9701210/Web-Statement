@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Web Statement</title>
+
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+        <link href="/css/page.css" rel="stylesheet" />
+        <link href="/font/noto.css" rel="stylesheet" />
+        <link href="/font/barcode.css" rel="stylesheet" />
+
+        <script src="http://code.highcharts.com.cn/highcharts/8.2.0/highcharts.js"></script>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="text-center stmtTitle">网络银行月结单</div>
+            <div id="stmt-summ" class="container genFont address"></div>
+            <!--  <div class="row sideBarCode"><img src="/barcode2.png"></div>-->
+            
+            <div id="prod-summ-total">
+                <div id="piechart-asset"></div>
+                <div id="piechart-liability"></div>
+            </div>
+
+            <div id="one-glance-summ">
+
+            </div>
+
+            <div class="text-left border-top stmtSummTitle border-dark">存款及投资账户概要</div>
+            <div class="account_detail_section">
+                <div class="account_detail_section-table">
+                    <table class="table">
+                        <thead>
+                            <tr class="d-flex table-active" align="center">
+                                <th scope="col" class="col-3 border border-dark border-right-0">类型</th>
+                                <th scope="col" class="col-3 border border-dark border-right-0">账户号</th>
+                                <th scope="col" class="col-3 border border-dark border-right-0">币种/产品</th>
+                                <th scope="col" class="col-3 border border-dark">余额</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="text-left border-top stmtSummTitle border-dark">账户明细</div>
+            <div class="text-left stmtSummTitle">存款及投资账户明细</div>
+            <div id="account_detail_container"></div>
+        </div>
+        <script>
+            function htmlDecode(input) {
+                var doc = new DOMParser().parseFromString(input, "text/html");
+                return doc.documentElement.textContent;
+            }
+
+            $(document).ready(function(){
+                $.getJSON("/stmt/summ/202010/R123456", function(data){
+                    var sectionHtml = htmlDecode(data.documentFragmentResponse.sections);
+                    $("#stmt-summ").append(sectionHtml);
+                });
+
+                $.getJSON("/stmt/one-glance-summ/202010/R123456", function(data){
+                    var sectionHtml = htmlDecode(data.documentFragmentResponse.sections);
+                    $("#one-glance-summ").append(sectionHtml);
+                });
+
+                $.getJSON("/stmt/acct-detail-sa-in/202010/R123456", function(data){
+                    var sectionHtml = htmlDecode(data.documentFragmentResponse.sections);
+                    $("#account_detail_container").append(sectionHtml);
+                });
+
+                $.getJSON("/stmt/prod-summ-total/202010/R123456", function(data){
+
+                    var sectionHtml = htmlDecode(data.documentFragmentResponse.sections);
+                    $("#prod-summ-total").append(sectionHtml);
+
+                    var assetTotalData = [];
+                    var assetTotalRows = $("#summ-total-asset").find("tr");
+
+                    assetTotalRows.each(function(index, element){
+                        var cells = $(this).find("td");
+                        var asset = {name: cells[0].innerHTML, y: parseFloat(cells[1].innerHTML)};
+                        assetTotalData.push(asset);
+                    });
+
+                    var liabTotalData = [];
+                    var liabTotalRows = $("#summ-total-liability").find("tr");
+
+                    liabTotalRows.each(function(index, element){
+                        var cells = $(this).find("td");
+                        var liab = {name: cells[0].innerHTML, y: parseFloat(cells[1].innerHTML)};
+                        liabTotalData.push(liab);
+                    });
+
+                    var liabChart = Highcharts.chart('piechart-liability', {
+                        chart : {
+                            plotBackgroundColor:null,
+                            plotBorderWidth:null,
+                            plotShadow:false,
+                            type:'pie'
+                        },
+                        title: {
+                            text: '负债'
+                        },
+                        accessibility:{
+                            point:{
+                                valueSuffix:''
+                            }
+                        },
+                        plotOptions:{
+                            pie: {
+                            	size:'75%',
+	                            dataLabels:{
+	                                enabled:false,
+	                                format:'<b>{point.name}</b>: {point.y}'
+	                            },
+                            }
+                        },
+                        series:[
+                            {
+                                name:'Liability',
+                                colorByPoint: true,
+                                data: liabTotalData
+                            }
+                        ]
+                    });
+
+                    var assetChart = Highcharts.chart('piechart-asset', {
+                        chart : {
+                            plotBackgroundColor:null,
+                            plotBorderWidth:null,
+                            plotShadow:false,
+                            type:'pie'
+                        },
+                        title: {
+                            text: '资产'
+                        },
+                        accessibility:{
+                            point:{
+                                valueSuffix:''
+                            }
+                        },
+                        plotOptions:{
+                            pie: {
+                            	size:'75%',
+	                            dataLabels:{
+	                                enabled:false,
+	                                format:'<b>{point.name}</b>: {point.y}'
+	                            },
+                            }
+                        },
+                        series:[
+                            {
+                                name:'Assets',
+                                colorByPoint: true,
+                                data: assetTotalData
+                            }
+                        ]
+                    });
+                    
+
+                });
+
+            })
+        </script>
+    </body>
+</html>

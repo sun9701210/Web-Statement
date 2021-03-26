@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+        <title>Web Statement - Template Create Result</title>
+         <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>      
+       <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>        
+        <script src="https://cdn.jsdelivr.net/npm/smartwizard@5.1.1/dist/js/jquery.smartWizard.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+       <style>
+       		#one{
+					width: 400px;
+					height: 200px;
+					background-color:white;	
+					text-align: center;
+					line-height: 150px;
+					position:absolute; 
+					top: 50%;
+					left: 50%;
+					margin-top: -100px;
+					margin-left: -200px; 
+					float: left;
+					z-index: 2;
+				}
+				#one strong{
+					margin-left:-230px;
+				}
+				.bg_mask {
+					position: fixed;
+					top: 0%;
+					left: 0%;
+					width: 100%;
+					height: 100%;
+					background-color: black;
+					-moz-opacity: 0.5;
+					opacity: 0.5;
+					filter: alpha(opacity = 50);
+				}
+				#btn{
+					float:left;
+					margin-top:130px;
+					margin-left:160px;
+				}
+				#btn a{
+					text-decoration:none;
+					color:white;
+				}
+       </style>
+    </head>
+    <body>
+    <div th:include="dashboard/com/navbar :: navbar"></div>
+ 	
+   	<div id="big">			
+			<div id="one">
+				<strong th:text="${result}"></strong>
+				<button class="btn btn-info btn-search" id="btn">
+                	<a href="/dashboard/template">&#12288;OK&#12288;</a>
+            	</button>
+			</div>
+			
+			<div class="bg_mask"></div> 
+	</div> 
+    
+    </body>
+</html>

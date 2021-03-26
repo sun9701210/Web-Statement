@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+        <title>Web Statement - Template Management</title>
+    </head>
+    <body>
+        <h2>Templates</h2>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th></th>
+            </tr>
+            <tr th:each="template: ${templates}">
+                <td th:text="${template.name}"></td>
+                <td th:text="${template.description}"></td>
+                <td><a th:href="@{'/dashboard/template/edit/' + ${template.id} }">Edit</a></td>
+            </tr>
+        </table>
+        <a href="/dashboard/template/new">Create New Template</a>
+    </body>
+</html>

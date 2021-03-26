@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+        <title>Web Statement - Template Management</title>
+         <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>      
+       <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>        
+        <script src="https://cdn.jsdelivr.net/npm/smartwizard@5.1.1/dist/js/jquery.smartWizard.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+       	
+       	<link rel="stylesheet" type="text/css" href="/easyui/themes/default/easyui.css">
+		<link rel="stylesheet" type="text/css" href="/easyui/themes/icon.css">
+       	<script type="text/javascript" src="/easyui/jquery.easyui.min.js"></script>
+       		
+    </head>
+    <body>
+    <div th:include="dashboard/com/navbar :: navbar"></div>
+    	<br>
+    	
+    	<div class="col-md-2" style="height:500px;float:left;white-space: nowrap; overflow: auto;state:closed;">
+          	
+          	<ul class="easyui-tree" data-options="
+					method:'get',
+					animate:true,
+					formatter:function(node){
+						var s = node.text;
+						if (node.children){
+							s += ' <span style=\'color:blue\'>(' + node.children.length + ')</span>';
+						}
+						return s;
+					}
+				" id="tree">	
+						
+		       <a href="#" th:onclick="loadTree()">Tree View</a>
+		       
+			</ul>
+        </div>
+        
+        <div class="col-md-9 ml-5" style="float:left;">
+        <h2>Templates</h2>
+        
+       
+            <div class="input-group col-md-3 ml-auto" style="margin-top:-40px;">
+        	<input type="text" class="form-control"placeholder="input Name here" / >
+        	<span class="input-group-btn">
+        		<button class="btn btn-info btn-search" th:onclick="search()">Search</button>
+        	</span>
+        	
+        </div>
+        <br>
+        <br>
+        <table class="table">
+        <thead>
+        	 <tr>
+				<th>Advice Type</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Ref OPPM</th>
+				<th>Last Updated By</th>
+				<th>Last Updated At</th>
+                <th>Operation</th>
+            </tr>
+        </thead>
+        <tbody id="tb">
+			<tr th:each="template: ${templates}">
+				<td th:text="${template.folder.name}"></td>
+				<td th:text="${template.name}"></td>
+				<td th:text="${template.description}"></td>
+				<td th:text="${template.oppm}"></td>
+				<td th:text="${template.lastUpdatedBy}"></td>
+				<td th:text="${template.lastUpdatedTime}"></td>
+				<td>
+					<a th:href="@{'/dashboard/template/preview/' + ${template.id} }">Preview</a>&nbsp;
+					<a th:href="@{'/dashboard/template/edit/' + ${template.id} }">Edit</a>&nbsp;
+					<a href="#" th:onclick="remove([[${template.id}]])">Remove</a>&nbsp;
+				</td>
+			</tr>
+			<tr> 
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+        </tbody>
+            
+        </table>
+        <button class="btn btn-info btn-search">
+        	<a href="/dashboard/template/new" style="color:white; text-decoration:none;">Create New Template</a>
+        </button>
+        </div>
+       <script th:inline="none">
+       function remove(id){
+ 			
+ 			if(confirm("Are you sure to remove it?")){
+ 				$.ajax({ 				
+ 					url:"/dashboard/template/remove",
+ 					data:{id:id},
+ 					type:'DELETE',
+ 					dataType:'text',
+ 					success:function(re){
+ 						if(re){
+ 							alert("Successfully remove！");
+ 							window.location.reload(true);
+ 						}
+ 					}
+ 				});
+
+ 		};
+       };
+       function search(){  	  
+ 			var templateName=$(".form-control").val();			
+ 				$.ajax({
+ 	  				url:"/dashboard/template/search",
+ 	  				type:'GET',
+ 	  				data:{templateName:templateName},
+ 	  			 	
+ 	  				success:function(data){
+ 	  				
+ 	  						$("#tb").empty();
+ 	  						
+							var str="";
+							
+							for(var i=0;i<data.length;i++){
+								 str+='<tr><td>'+data[i].folder.name+'</td>'+
+									'<td>'+data[i].name+'</td>'+
+			                        '<td>'+data[i].description+'</td>'+
+			                        '<td>'+data[i].oppm+'</td>'+
+			                        '<td>'+data[i].lastUpdatedBy+'</td>'+
+			                        '<td>'+data[i].lastUpdatedTime+'</td>'+
+			                        '<td>'+'<a href="/dashboard/template/preview'+data[i].id+'">Preview</a>'+
+			                        '<td>'+'<a href="/dashboard/template/edit/'+data[i].id+'">Edit</a>'+
+			                        '<td>'+'<a href="#" onclick="remove('+data[i].id+')">Remove</a>'+
+			                        '</td></tr>'; 
+							}
+	                       
+	                        $("#tb").append(str);
+ 	  					
+ 	  						
+						},
+						                  	  			 
+ 			}); 
+ 			
+ 		};
+ 	
+ 		function treeSearch(){
+ 			
+ 			var search=$("#tree_easyui_tree_3").text();
+ 			
+ 			var searchName=search.substr(0,5);
+ 			
+ 			alert(searchName);
+ 		}
+		function loadTree(){
+ 			
+ 			$.ajax({
+ 			
+ 				url:"/dashboard/template-folder/load",
+ 				type:'GET',
+ 				dataType:'json',
+ 				success:function(data){
+						
+ 					$("#tree").empty();
+ 					
+ 					var str=tree(data);
+ 					
+ 					
+					$("#tree").append(str);
+					
+ 				}
+ 			          		
+ 			});
+ 					
+ 		
+ 		}
+ 		var str="";
+ 		var indent="";
+ 		
+ 		function tree(data){
+ 			
+				if(data.length>0){
+					for(var i=0;i<data.length;i++){
+						if(data[i].parent!=null){
+							if(data[i].parentId==data[i].lastId){
+								indent=indent;
+							}	
+							indent+="<span class='tree-indent'></span>";
+								
+						}else{
+							indent="";
+						}						
+						var datai=data[i].id+1;
+						var datap=data[i].parentId+1;
+						if(data[i].parentId==undefined){
+							datap=1;
+						}
+						
+						if(data[i].child){						
+							str+="<li><ul style='display:block;'><div id='tree_easyui_tree_"+data[i].parentId+"' class='tree-node'>"+indent+"<span class='tree-hit tree-expanded' onclick='hid("+'tree_easyui_tree_'+datap+")'></span><span class='tree-icon tree-folder tree-folder-open'></span><span class='tree-title'>"+data[i].name+"</span><span style='color:blue'>("+data[i].fileAmount+")</span>";
+								
+								if(data[i].parentId==2){
+									str+="<img src='http://www.jeasyui.com/easyui/themes/icons/search.png' onclick='treeSearch()'>";
+								}
+								if(data[i].childrenList){
+									str+="<ul style='display:block;'><li><div id='tree_easyui_tree_"+datap+"' class='treenode'>";
+									for(var j=0;j<data[i].childrenList.length;j++){
+										
+											str+=indent+"<span class='tree-indent'></span><span class='tree-icon tree-file'></span><span class='tree-title' onclick='folderSearch()'>"+data[i].childrenList[j]+"</span></br>";
+										
+										
+									}
+									str+="</li></ul>";
+								}
+								
+								tree(data[i].child);
+								
+							
+								str+="</div></ul></li>";
+							
+								
+						}else{
+							
+							str+="<ul><li>"+data[i].name+"</li></ul>";
+						}
+					}
+				
+				} 	
+				
+				return str;	
+		}		
+ 		function hid(obj){
+ 			
+ 			//alert(obj);
+ 			$(obj).toggle();
+ 			
+ 		}
+ 		
+       </script>
+    </body>
+</html>

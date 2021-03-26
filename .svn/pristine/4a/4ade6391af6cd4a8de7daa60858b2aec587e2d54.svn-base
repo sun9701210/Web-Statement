@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		
+	</head>
+	<body>
+	<div th:fragment="navbar">
+		<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+		
+		  <a class="navbar-brand" href="/dashboard">CCS Doc Hub</a>&#12288;&#12288;&#12288;
+		  <ul class="navbar-nav">
+
+		    <li class="nav-item dropdown">
+		      <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+		        Web Statement
+		      </a>
+		      <div class="dropdown-menu">
+		        <a class="dropdown-item" href="/ccs-web-stmt">Web Statement</a>	        
+				<a class="dropdown-item" href="#">Link 2</a>	
+		        <a class="dropdown-item" href="#">Link 3</a>
+		      </div>
+		    </li>
+			<li class="nav-item dropdown">
+			  <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+			   Product Display Definition
+			   </a>
+			   <div class="dropdown-menu">
+			   <a class="dropdown-item" href="/prod-setup">Product Display Definition</a>       
+				<a class="dropdown-item" href="#">Link 2</a>	
+			    <a class="dropdown-item" href="#">Link 3</a>
+			  </div>
+			</li>
+			<li class="nav-item dropdown">
+			  <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+			    Format Type Definition
+			  </a>
+			  <div class="dropdown-menu">
+			    <a class="dropdown-item" href="/format-type-setup-table">Format Type Definition</a>	        
+				<a class="dropdown-item" href="#">Link 2</a>	
+			    <a class="dropdown-item" href="#">Link 3</a>
+			  </div>
+			</li>
+			<li class="nav-item dropdown">
+			  <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+			   Template Management
+			  </a>
+			  <div class="dropdown-menu">
+			    <a class="dropdown-item" href="/dashboard/template">Template Management</a>	        
+				<a class="dropdown-item" href="/dashboard/ckfinder">CKFinder</a>	
+			    <a class="dropdown-item" href="/dashboard/template/preview/15">Preview Sample</a>
+			  </div>
+			</li>
+			<li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+					Data Source Management
+				</a>
+				<div class="dropdown-menu">
+					<a class="dropdown-item" href="/dashboard/datasource">Data Source</a>	        
+					<a class="dropdown-item" href="#">Link 2</a>	
+					<a class="dropdown-item" href="#">Link 3</a>
+				</div>
+			</li>
+			
+		  </ul>
+		  &#12288; &#12288; 
+		  <ul class="navbar-nav ml-auto">
+			    <li class="nav-item">			    	
+			      <a class="nav-link" href="#">My Profile</a>
+			     </li>
+			</ul>
+		  
+			<ul class="navbar-nav ml-auto">
+			    <li class="nav-item">
+			    	
+			      <a class="nav-link" href="/logout">Logout</a>
+			  </ul>
+		</nav>
+		<br>	
+		
+		</div>	
+		
+	</body>
+</html>

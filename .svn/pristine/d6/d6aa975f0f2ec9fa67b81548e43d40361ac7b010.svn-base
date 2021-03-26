@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Welcome to Web Statement Application</title>
+	</head>
+	<body>
+		You don't have permission to access this page.
+		<br />
+		Go to <a href="/">Home Page</a>
+	</body>
+</html>

@@ -1,0 +1,32 @@
+package webstmt.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+public class IndexController {
+
+	@RequestMapping("/")
+	public String index()
+	{
+		return "index";
+	}
+	
+	@RequestMapping("/prod-setup")
+	public String productSetup()
+	{
+		return "prod-setup";
+	}
+	
+	@RequestMapping("/prod-setup-table")
+	public String productSetupTable()
+	{
+		return "prod-setup-table";
+	}
+	
+	@RequestMapping("/format-type-setup-table")
+	public String formatTypeSetupTable()
+	{
+		return "format-type-setup-table";
+	}
+}
