@@ -77,6 +77,7 @@ public class DataDictionaryController {
 		dictionary.setName(dic.getName());
 		dictionary.setCategory(dic.getCategory());
 		dictionary.setDescription(dic.getDescription());
+		dictionary.setDefaultValue(dic.getDefaultValue());
 		dictionary.setFormat(dic.getFormat());
 		dictionary.setType(dic.getType());
 		
@@ -129,6 +130,7 @@ public class DataDictionaryController {
 		dictionary.setName(dic.getName());
 		dictionary.setCategory(dic.getCategory());
 		dictionary.setDescription(dic.getDescription());
+		dictionary.setDefaultValue(dic.getDefaultValue());
 		dictionary.setFormat(dic.getFormat());
 		dictionary.setType(dic.getType());
 		

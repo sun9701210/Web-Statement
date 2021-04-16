@@ -45,6 +45,7 @@
         	 	<th>Name</th>
                 <th>Category</th>
                 <th>Description</th>
+                <th>Default Value</th>
                 <th>Format</th>
                 <th>Type</th>
                 <th>Operation</th>
@@ -57,6 +58,7 @@
                 <td th:text="${dictionary.name}"></td>
                 <td th:text="${dictionary.category}"></td>
                 <td th:text="${dictionary.description}"></td>
+                <td th:text="${dictionary.defaultValue}"></td>
                 <td th:text="${dictionary.format}"></td>
                 <td th:text="${dictionary.type}"></td>
                 <td><a th:href="@{'/dashboard/dictionary/edit/' + ${dictionary.id} }">Edit</a></td>
@@ -73,6 +75,7 @@
             	<td></td>
             	<td></td>
             	<td></td>
+            	
             </tr>
         </tbody>
             
