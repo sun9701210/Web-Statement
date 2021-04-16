@@ -33,8 +33,7 @@ public class PreRequestConfigListener implements Listener<GetConfigForRequestEve
         
         String userFileRoot = backendConfig.getRoot();
         
-		User user =(User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		String username = user.getUsername();
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		
 		if(username==null) {
 			throw new InvalidRequestException("User is not authenticated.");

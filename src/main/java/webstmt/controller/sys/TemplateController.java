@@ -1,21 +1,33 @@
 package webstmt.controller.sys;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -26,6 +38,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cksource.ckfinder.utils.PathUtils;
 import com.google.gson.Gson;
 
 import webstmt.entity.sys.Template;
@@ -37,17 +50,24 @@ import webstmt.entity.sys.datasource.DataDictionary;
 import webstmt.entity.sys.datasource.DataType;
 import webstmt.entity.sys.datasource.DatabaseDataSource;
 import webstmt.entity.sys.datasource.DictionaryCategory;
+import webstmt.entity.sys.datasource.LegalVehicle;
 import webstmt.entity.sys.datasource.SystemID;
 import webstmt.service.sys.TemplateFolderService;
 import webstmt.service.sys.TemplateService;
 import webstmt.service.sys.TemplateVersionService;
 import webstmt.service.sys.datasource.DataBindingService;
 import webstmt.service.sys.datasource.DataDictionaryService;
+import webstmt.utils.HtmlUtil;
+import webstmt.utils.ImageUtils;
+import webstmt.utils.PDFUtils;
+import webstmt.utils.PathUtil;
 
 @Controller
 @RequestMapping("/dashboard/template")
 public class TemplateController 
 {
+	private static Logger log = LoggerFactory.getLogger(TemplateController.class);
+	
 	@Autowired
 	private TemplateService service;
 	
@@ -60,11 +80,90 @@ public class TemplateController
 	@Autowired
 	private DataDictionaryService dictionaryService;
 	
+	@Value("${user.upload.root}")
+	private String userUploadPhysicalPath;
+	
+	private String replaceImageByBase64(String rawImgPath, String loginUsername)
+	{
+		String imagePhysicalPath = PathUtil.convertToPhysicalPath(rawImgPath, userUploadPhysicalPath, loginUsername);
+		log.info("Reading image - "+imagePhysicalPath);
+		
+		return ImageUtils.convertImageBytesToBase64String(imagePhysicalPath);
+	}
+	
+	private String replaceAllImages(String rawHtml, String loginUsername)
+	{	
+		List<String> imageStrings = HtmlUtil.extractAllImages(rawHtml);
+		
+		Map<String, String> rawNewImagesMap = new HashMap<>();
+		
+		for (String rawImageHtml : imageStrings) 
+		{
+			String newImageHtml = replaceImageByBase64(StringUtils.uriDecode(rawImageHtml, Charset.forName("UTF-8")), loginUsername);
+			
+			rawNewImagesMap.put(rawImageHtml, newImageHtml);
+		}
+		
+		String replacedHtml = rawHtml;
+		
+		for (Entry<String, String> oldNewImgTextPair : rawNewImagesMap.entrySet())
+		{
+			String preHtml = replacedHtml.substring(0, replacedHtml.indexOf(oldNewImgTextPair.getKey()));
+			String postHtml = replacedHtml.substring(replacedHtml.indexOf(oldNewImgTextPair.getKey())+oldNewImgTextPair.getKey().length());
+			
+			replacedHtml = preHtml + oldNewImgTextPair.getValue() + postHtml;
+		}
+		
+		return replacedHtml;
+	}
+	
+	@Autowired
+	private HtmlUtil htmlUtil;
+	
+	@RequestMapping("generate/{id}")
+	public void generateStatement(HttpServletResponse response, @PathVariable("id") long templateId, @RequestParam(value="custNo", required=false) String custNo)
+	{
+		Template t = service.read(templateId);
+		
+		log.info("Cust# - "+custNo);
+		log.info("Raw HTML Content:");
+		log.info(t.getContent());
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		
+		String html = replaceAllImages(t.getContent(), auth.getName());
+		html = htmlUtil.wrapContainer(html);
+		
+		log.debug("Wrapped HTML Content:");
+		log.debug(html);
+		
+		PDFUtils util = new PDFUtils();
+		ByteArrayOutputStream output = util.html2Pdf(html);
+		
+		response.setHeader("Expires", "0");
+		response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
+		response.setHeader("Pragma", "public");
+		response.setHeader("Content-Disposition", "attachment;filename=statement.pdf");
+		response.setContentType("application/pdf");
+		
+		try {
+			
+			OutputStream os = response.getOutputStream();
+			output.writeTo(os);
+			os.flush();
+			os.close();
+			
+		} catch (IOException e) {
+			log.error("Fail to write pdf stream to response.", e);
+		}
+	}
+	
 	@GetMapping(value="/new")
 	public String newTemplate(Model model)
 	{
 		model.addAttribute("template", new Template());
-		model.addAttribute("allFolders", folderService.load());
+		model.addAttribute("allFolders", folderService.findAllActive());
+		model.addAttribute("allLegalVehicles", LegalVehicle.values());
 		
 		return "dashboard/template-new";
 	}
@@ -77,8 +176,14 @@ public class TemplateController
 		Template tpl = new Template();
 		tpl.setName(template.getName());
 		tpl.setDescription(template.getDescription());
-		tpl.setContent(template.getContent());
+		
+		log.info("Removing ckeditor line break...");
+		String html = template.getContent();
+		html = htmlUtil.removeHtmlSegment(html, "<p><br data-cke-filler=\"true\"></p>");
+		tpl.setContent(html);
+		
 		tpl.setOppm(template.getOppm());
+		tpl.setLegalVehicle(template.getLegalVehicle());
 		
 		long folderId = template.getFolder().getId();
 		TemplateFolder folder = folderService.findById(folderId);
@@ -129,6 +234,8 @@ public class TemplateController
 			model.addAttribute("allSystemIds", SystemID.values());
 			model.addAttribute("allDataDictionary", dictionaryService.findAll());
 			model.addAttribute("allActiveFolders", folderService.findAllActive());
+			model.addAttribute("allLegalVehicles", LegalVehicle.values());
+			
 //			model.addAttribute("dataBindingSize", template.getDataBindings().size());
 		}
 		
@@ -161,10 +268,16 @@ public class TemplateController
 		
 		tpl.setName(template.getName());
 		tpl.setDescription(template.getDescription());
-		tpl.setContent(template.getContent());
+		
+		log.info("Removing ckeditor line break...");
+		String html = template.getContent();
+		html = htmlUtil.removeHtmlSegment(html, "<p><br data-cke-filler=\"true\"></p>");//&lt;p&gt;&lt;br data-cke-filler=&quot;true&quot;&gt;&lt;/p&gt;
+		tpl.setContent(html);
+		
 		tpl.setOppm(template.getOppm());
 		tpl.setLastUpdatedBy(auth.getName());
 		tpl.setLastUpdatedTime(new Date());
+		tpl.setLegalVehicle(template.getLegalVehicle());
 		
 		//change folder
 		long newFolderId = template.getFolder().getId();
@@ -262,11 +375,36 @@ public class TemplateController
 	}
 	
 	@RequestMapping(value="", method= RequestMethod.GET)
-	public String viewAllTemplates(Model model)
+	public String viewAllTemplates(Model model, Authentication auth)
 	{
 		List<Template> templates = service.readAll();
 		
 		model.addAttribute("templates", templates);
+		
+		//TODO put legal vehicle part of role into response
+		
+		List<String> legalVehicleAuthorityList = new ArrayList<>();
+		
+		for (GrantedAuthority authority : auth.getAuthorities()) {
+			
+			if(authority!=null&&!"".equalsIgnoreCase(authority.getAuthority()))
+			{
+				if("ROLE_ADMIN".equalsIgnoreCase(authority.getAuthority()))
+				{
+					legalVehicleAuthorityList.add("ADMIN");
+				}
+				
+				if(authority.getAuthority().startsWith("ROLE_BIZ_"))
+				{
+					legalVehicleAuthorityList.add(authority.getAuthority().substring("ROLE_BIZ_".length()));
+				}
+			}
+		}
+		
+		System.out.println(legalVehicleAuthorityList);
+		
+		model.addAttribute("legalVehiclesAuth", legalVehicleAuthorityList);
+		//TODO let thymeleaf to judge display buttons
 		
 		return "dashboard/template-view-all";
 	}
@@ -282,6 +420,7 @@ public class TemplateController
 		jsonTpl.setName(template.getName());
 		jsonTpl.setDescription(template.getDescription());
 		jsonTpl.setContent(template.getContent());
+		jsonTpl.setLegalVehicle(template.getLegalVehicle());
 		
 		Gson gson = new Gson();
 		
@@ -311,7 +450,19 @@ public class TemplateController
 		return template;
 	}
 	
-	@GetMapping(value="/folderSearch")
+	@GetMapping(value="/find")
+	@ResponseBody
+	public List<Template> findByFolderId(String folderName){
+		
+		Long folderId=folderService.getByName(folderName);
+		
+		List<Template> template=service.find(folderId);		
+		
+		return template;
+	}
+		
+	
+	@GetMapping(value="/oppm")
 	@ResponseBody
 	public List<Template> searchOppm(Long oppm){
 		
@@ -335,6 +486,27 @@ public class TemplateController
 		
 		model.addAttribute("render", renderResult);
 		model.addAttribute("template", template);
+		
+		//verify permission
+		String templateLegalVehicle = template.getLegalVehicle();
+		String templateRequiredRole = "ROLE_BIZ_"+templateLegalVehicle;
+		
+		boolean authorizedUser = false;
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		
+		for (GrantedAuthority authority : auth.getAuthorities()) 
+		{
+			String authorityText = authority.getAuthority();
+			
+			if(authorityText.equalsIgnoreCase("ROLE_ADMIN")||authorityText.equalsIgnoreCase(templateRequiredRole))
+			{
+				authorizedUser = true;
+				break;
+			}
+		}
+		
+		model.addAttribute("authorized", authorizedUser);
 		
 		return "dashboard/template-preview";
 	}

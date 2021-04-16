@@ -20,4 +20,8 @@ public interface TemplateFolderRepository extends JpaRepository<TemplateFolder, 
 	
 	@Query("select f from TemplateFolder f where f.active = true")
 	List<TemplateFolder> findAllActiveFolder();
+
+	@Query("select f.id from TemplateFolder f where f.name = :folderName")
+	Long getIdByName(@Param("folderName")String folderName);
+	
 }

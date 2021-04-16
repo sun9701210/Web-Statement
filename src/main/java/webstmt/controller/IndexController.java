@@ -15,7 +15,14 @@ public class IndexController {
 		{
 			for (GrantedAuthority grantedAuth : auth.getAuthorities()) 
 			{
+				if(grantedAuth.getAuthority()==null||"".equals(grantedAuth.getAuthority().trim())) break;
+				
 				if("ROLE_ADMIN".equals(grantedAuth.getAuthority()))
+				{
+					return "redirect:/dashboard";
+				}
+				
+				if(grantedAuth.getAuthority().startsWith("ROLE_BIZ"))
 				{
 					return "redirect:/dashboard";
 				}

@@ -29,6 +29,13 @@ public class TemplateFolderService {
 		return frepo.getOne(id);
 	}
 	
+	public Long getByName(String folderName){
+		
+		return frepo.getIdByName(folderName);
+		
+	}
+	
+	
 	public List<TemplateFolder> findAllActive()
 	{
 		return frepo.findAllActiveFolder();

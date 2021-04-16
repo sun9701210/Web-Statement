@@ -16,6 +16,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import webstmt.entity.sys.datasource.DataBinding;
 
 @Entity
@@ -31,6 +33,7 @@ public class Template implements Serializable
 	private String content;
 	private String description;
 	private String oppm;
+	private String legalVehicle;
 	
 	private String lastUpdatedBy;
 	@OrderBy("lastUpdatedTime desc")
@@ -70,15 +73,20 @@ public class Template implements Serializable
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
+	@JsonBackReference
 	public List<DataBinding> getDataBindings() {
 		return dataBindings;
 	}
+	@JsonBackReference
 	public void setDataBindings(List<DataBinding> dataBindings) {
 		this.dataBindings = dataBindings;
 	}	
+	
 	public TemplateFolder getFolder() {
 		return folder;
 	}
+	
 	public void setFolder(TemplateFolder folder) {
 		this.folder = folder;
 	}
@@ -89,9 +97,11 @@ public class Template implements Serializable
 	public void setOppm(String oppm) {
 		this.oppm = oppm;
 	}
+	@JsonBackReference
 	public List<TemplateVersion> getVersions() {
 		return versions;
 	}
+	@JsonBackReference
 	public void setVersions(List<TemplateVersion> versions) {
 		this.versions = versions;
 	}
@@ -106,6 +116,12 @@ public class Template implements Serializable
 	}
 	public void setLastUpdatedTime(Date lastUpdatedTime) {
 		this.lastUpdatedTime = lastUpdatedTime;
+	}
+	public String getLegalVehicle() {
+		return legalVehicle;
+	}
+	public void setLegalVehicle(String legalVehicle) {
+		this.legalVehicle = legalVehicle;
 	}
 	@Override
 	public String toString() {

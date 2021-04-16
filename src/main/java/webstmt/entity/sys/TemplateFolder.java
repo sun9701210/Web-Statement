@@ -72,13 +72,13 @@ public class TemplateFolder {
 	}
 	public void setFileAmount(int fileAmount) {
 		this.fileAmount = fileAmount;
-	}
-	
-	public boolean isActive() {
+	}	
+
+	public Boolean isActive() {
 		return active;
 	}
 
-	public void setActive(boolean active) {
+	public void setActive(Boolean active) {
 		this.active = active;
 	}
 
@@ -87,4 +87,6 @@ public class TemplateFolder {
 		return "TemplateFolder [id=" + id + ", name=" + name + ", description=" + description + ", active=" + active
 				+ ", parent=" + parent + ", fileAmount=" + fileAmount + "]";
 	}
+
+	
 }

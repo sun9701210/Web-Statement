@@ -82,11 +82,16 @@
 				<label for="tpl-name">Name</label><br>
                 <input type="text" id="tpl-name" name="tpl-name" th:field="*{name}" /><br><br>
                 <label for="tpl-ref">Reference OPPM#</label><br>
-                <input type="text" id="tpl-ref" name="tpl-ref" th:field="*{oppm}" /><br><br>
+                <input type="text" id="tpl-ref" name="tpl-ref" th:field="*{oppm}" /><br><br>		
+				<label for="tpl-ref">Legal Vehicle</label><br>
+				<select id="tpl-legal-vehicle" th:field="*{legalVehicle}">
+					<option th:each="l:${allLegalVehicles}" th:text="${l}" th:value="${l}"></option>
+				</select><br><br>  
+				
 				<label for="tpl-folder">Advice Type</label><br />
 				<select id="tpl-folder" th:field="*{folder}">
 					<option th:each="f:${allActiveFolders}" th:text="${f.displayName}" th:value="${f.id}"></option>
-				</select><br><br>
+				</select><br><br>              
                 <label for="tpl-desc">Description</label><br>
                 <textarea id="tpl-desc" name="tpl-desc" th:field="*{description}"></textarea><br><br>
                 <label for="editor">Template</label><br>
@@ -137,10 +142,12 @@
 			</div>
 			
 			<div id="data-dictionary-popup" style="display: none;">
+				
 				<span>System ID</span>
 				<select id="data-dictionary-popup-choose-system-id">
 					<option th:each="systemId : ${allSystemIds}" th:value="${systemId}" th:text="${systemId}"></option>
 				</select><br />
+				
 				<span>Dictionary</span>
 				<select id="data-dictionary-popup-choose-dictionary">
 					<!-- <option th:each="dictionary : ${allDataDictionary}" th:value="${dictionary.id}" th:text="${dictionary.name}"></option> -->

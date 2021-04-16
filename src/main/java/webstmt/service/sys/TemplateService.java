@@ -1,16 +1,12 @@
 package webstmt.service.sys;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.HtmlUtils;
 
 import webstmt.entity.sys.Template;
-import webstmt.entity.sys.TemplateFolder;
-import webstmt.repo.sys.TemplateFolderRepository;
 import webstmt.repo.sys.TemplateRepository;
 
 @Service
@@ -18,8 +14,6 @@ public class TemplateService
 {
 	@Autowired
 	private TemplateRepository repo;
-	
-	//TODO CRUD
 	
 	public List<Template> readAll()
 	{
@@ -79,13 +73,13 @@ public class TemplateService
 		return template;
 	}
 	
-//	public List<Template> folderSearch(Long folderId){
-//		
-//		List<Template> template=repo.getByFolderId(folderId);
-//		
-//		return template;
-//		
-//	}
+	public List<Template> find(Long folderId){
+		
+		List<Template> template=repo.getByFolderId(folderId);
+		
+		return template;
+	}
+	
 	
 	public List<Template> oppmSearch(Long oppm){
 		

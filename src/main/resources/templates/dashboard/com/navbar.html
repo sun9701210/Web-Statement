@@ -10,17 +10,17 @@
 		  <a class="navbar-brand" href="/dashboard">CCS Doc Hub</a>&#12288;&#12288;&#12288;
 		  <ul class="navbar-nav">
 
-		    <li class="nav-item dropdown">
+		    <li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
 		      <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-		        Web Statement
+		        System Management
 		      </a>
 		      <div class="dropdown-menu">
-		        <a class="dropdown-item" href="/ccs-web-stmt">Web Statement</a>	        
-				<a class="dropdown-item" href="#">Link 2</a>	
+		        <a class="dropdown-item" href="/ccs-web-stmt">Sample Web Statement</a>	        
+				<a class="dropdown-item" href="/dashboard/user-management">User Management</a>	
 		        <a class="dropdown-item" href="#">Link 3</a>
 		      </div>
 		    </li>
-			<li class="nav-item dropdown">
+			<li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
 			  <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
 			   Product Display Definition
 			   </a>
@@ -30,7 +30,7 @@
 			    <a class="dropdown-item" href="#">Link 3</a>
 			  </div>
 			</li>
-			<li class="nav-item dropdown">
+			<li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
 			  <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
 			    Format Type Definition
 			  </a>
@@ -49,14 +49,14 @@
 			    <a class="dropdown-item" href="/dashboard/template/preview/15">Preview Sample</a>
 			  </div>
 			</li>
-			<li class="nav-item dropdown">
+			<li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
 				<a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
 					Data Source Management
 				</a>
 				<div class="dropdown-menu">
 					<a class="dropdown-item" href="/dashboard/datasource">Data Source</a>	       
 					<a class="dropdown-item" href="/dashboard/ckfinder">File Manager</a>	      
-					<a class="dropdown-item" href="#">Link 2</a>	
+					<a class="dropdown-item" href="/dashboard/dictionary">Data Dictionary</a>	
 					<a class="dropdown-item" href="#">Link 3</a>
 				</div>
 			</li>

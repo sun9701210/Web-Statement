@@ -18,8 +18,8 @@ public interface TemplateRepository extends JpaRepository<Template, Long>
 	@Query("select count(t) from Template t where t.folder.id = :folderId")
 	Integer countByFolderId(@Param("folderId")Long folderId);
 	
-//	@Query("select t from Template where t.folder.id = :folderId")
-//	List<Template> getByFolderId(@Param("folderId")Long folderId);
+	@Query("select t from Template t where t.folder.id = :folderId")
+	List<Template> getByFolderId(@Param("folderId")Long folderId);
 	
 	@Query("select t from Template t where t.oppm = :oppm")
 	List<Template> getByOppm(@Param("oppm")Long oppm);

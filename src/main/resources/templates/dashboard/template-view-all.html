@@ -53,6 +53,7 @@
                 <th>Name</th>
                 <th>Description</th>
                 <th>Ref OPPM</th>
+				<th>Legal Vehicle</th>
 				<th>Last Updated By</th>
 				<th>Last Updated At</th>
                 <th>Operation</th>
@@ -64,12 +65,16 @@
 				<td th:text="${template.name}"></td>
 				<td th:text="${template.description}"></td>
 				<td th:text="${template.oppm}"></td>
+				<td th:text="${template.legalVehicle}"></td>
 				<td th:text="${template.lastUpdatedBy}"></td>
 				<td th:text="${template.lastUpdatedTime}"></td>
 				<td>
 					<a th:href="@{'/dashboard/template/preview/' + ${template.id} }">Preview</a>&nbsp;
-					<a th:href="@{'/dashboard/template/edit/' + ${template.id} }">Edit</a>&nbsp;
-					<a href="#" th:onclick="remove([[${template.id}]])">Remove</a>&nbsp;
+					<span th:if="${#lists.contains(legalVehiclesAuth, 'ADMIN') or #lists.contains(legalVehiclesAuth, template.legalVehicle)}">
+						<a th:href="@{'/dashboard/template/edit/' + ${template.id} }">Edit</a>&nbsp;
+						<a href="#" th:onclick="remove([[${template.id}]])">Remove</a>&nbsp;
+					</span>
+					
 				</td>
 			</tr>
 			<tr> 
@@ -129,12 +134,13 @@
 									'<td>'+data[i].name+'</td>'+
 			                        '<td>'+data[i].description+'</td>'+
 			                        '<td>'+data[i].oppm+'</td>'+
+			                        '<td>'+data[i].legalVehicle+'</td>'+
 			                        '<td>'+data[i].lastUpdatedBy+'</td>'+
 			                        '<td>'+data[i].lastUpdatedTime+'</td>'+
-			                        '<td>'+'<a href="/dashboard/template/preview'+data[i].id+'">Preview</a>'+
-			                        '<td>'+'<a href="/dashboard/template/edit/'+data[i].id+'">Edit</a>'+
-			                        '<td>'+'<a href="#" onclick="remove('+data[i].id+')">Remove</a>'+
-			                        '</td></tr>'; 
+			                        '<td>'+'<a href="/dashboard/template/preview'+data[i].id+'">Preview</a>&nbsp;&nbsp;'+
+		                        	   '<a href="/dashboard/template/edit/'+data[i].id+'">Edit</a>&nbsp;&nbsp;'+
+		                        	   '<a href="#" onclick="remove('+data[i].id+')">Remove</a>&nbsp;&nbsp;'+
+		                        	'</td></tr>'; 
 							}
 	                       
 	                        $("#tb").append(str);
@@ -146,14 +152,52 @@
  			
  		};
  	
+ 		
+ 		
+ 		
+ 		
  		function treeSearch(nodeId){
  			
  			var search=$("#tree_easyui_tree_"+nodeId).text();
  			
- 			var searchName=search.substr(0,5);
+ 			var folderName=search.substr(0,5);
  			
- 			alert("Go to search "+searchName);
- 		}
+ 			alert("Go to search "+folderName);
+ 			
+ 			$.ajax({
+ 			
+ 				url:"/dashboard/template/find",
+ 				type:'GET',
+ 				data:{folderName:folderName},
+ 				success:function(data){
+ 					
+ 					$("#tb").empty();
+ 					
+ 					var str="";
+ 					
+ 					for(var i=0;i<data.length;i++){
+						 str+='<tr><td>'+data[i].folder.name+'</td>'+
+							'<td>'+data[i].name+'</td>'+
+	                        '<td>'+data[i].description+'</td>'+
+	                        '<td>'+data[i].oppm+'</td>'+
+	                        '<td>'+data[i].legalVehicle+'</td>'+
+	                        '<td>'+data[i].lastUpdatedBy+'</td>'+
+	                        '<td>'+data[i].lastUpdatedTime+'</td>'+
+	                        '<td>'+'<a href="/dashboard/template/preview'+data[i].id+'">Preview</a>&nbsp;&nbsp;'+
+	                        	   '<a href="/dashboard/template/edit/'+data[i].id+'">Edit</a>&nbsp;&nbsp;'+
+	                        	   '<a href="#" onclick="remove('+data[i].id+')">Remove</a>&nbsp;&nbsp;'+
+	                        '</td></tr>'; 
+					}
+                  
+                   	$("#tb").append(str);
+					
+ 					
+ 				},
+ 				
+ 			});
+ 			
+ 			
+ 		};
 		function loadTree(){
  			
  			$.ajax({
@@ -221,7 +265,7 @@
 				}
 
 				for(var j=0;j<folder.child.length;j++){
-					str += tree(folder.child[j]);
+					str +=tree(folder.child[j]);
 				}
 				
 				str+="</div>";//end of tree child container

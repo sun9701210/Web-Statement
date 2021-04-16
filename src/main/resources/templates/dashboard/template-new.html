@@ -20,9 +20,13 @@
         	<input type="hidden" th:field="*{id}" />
 			<label for="tpl-name">Name</label><br>
 			<input type="text" id="tpl-name" name="tpl-name" th:field="*{name}" placeholder="Template Name" /><br><br>
-			<label for="tpl-ref">Name</label><br>
+			<label for="tpl-ref">OPPM</label><br>
         	<input type="text" id="tpl-ref" name="tpl-ref" th:field="*{oppm}" placeholder="Reference OPPM#" /><br><br>
-        	<label for="tpl-folder">Advice Type</label>
+			<label for="tpl-ref">legalVehicle</label><br>
+			<select id="tpl-legal-vehicle" th:field="*{legalVehicle}">
+				<option th:each="l:${allLegalVehicles}" th:text="${l}" th:value="${l}"></option>
+			</select><br><br>  
+        	<label for="tpl-folder">Advice Type</label><br>
 				<select id="tpl-folder" th:field="*{folder}">
 					<option th:each="f:${allFolders}" th:text="${f.displayName}" th:value="${f.id}"></option>
 				</select><br><br>
@@ -39,7 +43,7 @@
             <div class="sidebar"></div>
             <br>
             <br>
-            <button class="btn btn-info btn-search" style="margin-left:45%;">
+            <button class="btn btn-info btn-search" style="margin-left:40%;">
                 	Save Template and Preview
             </button>
         </form>
