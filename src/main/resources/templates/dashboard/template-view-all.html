@@ -19,7 +19,7 @@
     	
     	<div class="col-md-2" style="height:500px;float:left;white-space: nowrap; overflow: auto;state:closed;">
           	
-          	<ul class="easyui-tree" data-options="
+          	<ul class="easyui-tree" style="state:closed;" data-options="
 					method:'get',
 					animate:true,
 					formatter:function(node){
@@ -137,7 +137,7 @@
 			                        '<td>'+data[i].legalVehicle+'</td>'+
 			                        '<td>'+data[i].lastUpdatedBy+'</td>'+
 			                        '<td>'+data[i].lastUpdatedTime+'</td>'+
-			                        '<td>'+'<a href="/dashboard/template/preview'+data[i].id+'">Preview</a>&nbsp;&nbsp;'+
+			                        '<td>'+'<a href="/dashboard/template/preview/'+data[i].id+'">Preview</a>&nbsp;&nbsp;'+
 		                        	   '<a href="/dashboard/template/edit/'+data[i].id+'">Edit</a>&nbsp;&nbsp;'+
 		                        	   '<a href="#" onclick="remove('+data[i].id+')">Remove</a>&nbsp;&nbsp;'+
 		                        	'</td></tr>'; 
@@ -183,7 +183,7 @@
 	                        '<td>'+data[i].legalVehicle+'</td>'+
 	                        '<td>'+data[i].lastUpdatedBy+'</td>'+
 	                        '<td>'+data[i].lastUpdatedTime+'</td>'+
-	                        '<td>'+'<a href="/dashboard/template/preview'+data[i].id+'">Preview</a>&nbsp;&nbsp;'+
+	                        '<td>'+'<a href="/dashboard/template/preview/'+data[i].id+'">Preview</a>&nbsp;&nbsp;'+
 	                        	   '<a href="/dashboard/template/edit/'+data[i].id+'">Edit</a>&nbsp;&nbsp;'+
 	                        	   '<a href="#" onclick="remove('+data[i].id+')">Remove</a>&nbsp;&nbsp;'+
 	                        '</td></tr>'; 
@@ -222,12 +222,22 @@
 					}
 
 					$("#tree").append(str);
+ 				},
+ 			    complete:function() {
+ 			    	
+					var treeHitList = new Array();
 					
- 				}
- 			          		
+					$("#tree > li > ul > div > .tree-hit").each(function(index){
+						treeHitList.push(this);
+					});
+					
+					for(var i=0;i<treeHitList.length;i++) {
+						treeHitList[i].click();
+					}
+ 			    }    		
  			});
- 					
- 		
+ 			
+ 			
  		}
 
 		function getIndent(folder) {
@@ -256,7 +266,7 @@
 
 			if(folder.child){
 				
-				str+="<div id='tree_child_container_"+folder.id+"' parent-node-id='"+containerId+"'>";
+				str+="<div id='tree_child_container_"+folder.id+"' class='tree-container' parent-node-id='"+containerId+"'>";
 				
 				if(folder.childrenList){
 					for(var j=0;j<folder.childrenList.length;j++){							
@@ -277,6 +287,7 @@
 		}
 
  		function showHide(obj){
+ 			console.log(obj);
 			$("#tree_child_container_"+obj).toggle();
  		}
  		

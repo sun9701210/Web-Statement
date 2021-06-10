@@ -1,6 +1,7 @@
 package webstmt.service.sys;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import webstmt.entity.sys.Template;
 import webstmt.entity.sys.TemplateFolder;
+import webstmt.entity.sys.datasource.LegalVehicle;
 import webstmt.repo.sys.TemplateFolderRepository;
 import webstmt.repo.sys.TemplateRepository;
 
@@ -22,7 +24,7 @@ public class TemplateFolderService {
 	private TemplateRepository trepo;
 	
 	private List<TemplateFolder> menu;
-	Map<Object,Object> mapArr=new LinkedHashMap<Object,Object>();
+	
 	
 	public TemplateFolder findById(long id)
 	{
@@ -39,6 +41,11 @@ public class TemplateFolderService {
 	public List<TemplateFolder> findAllActive()
 	{
 		return frepo.findAllActiveFolder();
+	}
+	
+	public List<TemplateFolder> findAllActiveByLegalVehicle(LegalVehicle legalVehicle)
+	{
+		return frepo.findAllActiveFolderByLegalVehicle(legalVehicle.toString());
 	}
 	
 	public List<Object> load(){
@@ -59,6 +66,8 @@ public class TemplateFolderService {
 		for(TemplateFolder root:allFolders){			
 							
 			if(root.getParent()==null){
+				
+				Map<Object,Object> mapArr=new HashMap<Object,Object>();
 				
 				mapArr.put("id", root.getId());
 				mapArr.put("name", root.getName());

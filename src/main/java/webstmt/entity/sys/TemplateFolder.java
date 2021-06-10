@@ -7,6 +7,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
+import webstmt.entity.sys.datasource.LegalVehicle;
+
 @Entity
 public class TemplateFolder {
 	
@@ -17,6 +19,7 @@ public class TemplateFolder {
 	private String name;
 	private String description;
 	private Boolean active;
+	private String legalVehicle;
 	
 	@ManyToOne
 	private TemplateFolder parent;
@@ -82,11 +85,21 @@ public class TemplateFolder {
 		this.active = active;
 	}
 
+	public String getLegalVehicle() {
+		return legalVehicle;
+	}
+
+	public void setLegalVehicle(String legalVehicle) {
+		this.legalVehicle = legalVehicle;
+	}
+
+	public Boolean getActive() {
+		return active;
+	}
+
 	@Override
 	public String toString() {
 		return "TemplateFolder [id=" + id + ", name=" + name + ", description=" + description + ", active=" + active
-				+ ", parent=" + parent + ", fileAmount=" + fileAmount + "]";
+				+ ", legalVehicle=" + legalVehicle + ", parent=" + parent + ", fileAmount=" + fileAmount + "]";
 	}
-
-	
 }

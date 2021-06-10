@@ -49,6 +49,35 @@
         </form>
         </div>
         <script>
+		$(document).ready(function (){
+			onLegalVehicleChange();
+			$("#tpl-legal-vehicle").change(onLegalVehicleChange);
+		});
+
+		function onLegalVehicleChange() {
+			var legalVehicle=$("#tpl-legal-vehicle").children('option:selected').val();
+			var adviceTypeSelectObj = $("#tpl-folder");
+			$.ajax({
+				url: '/dashboard/template-folder/list?legalVehicle='+legalVehicle,
+				type: 'GET',
+				success: function (data) {
+					if(data.length===0) {
+						console.log('INFO: No data found. Nothing will happen.');
+						adviceTypeSelectObj.empty();
+						adviceTypeSelectObj.attr("disabled", true);;
+						confirm('No advice type defined under '+legalVehicle+'.');
+					} else {
+						adviceTypeSelectObj.empty();
+						for(let legalVehicleItem of data) {
+							adviceTypeSelectObj.append("<option value='"+legalVehicleItem.id+"'>"+legalVehicleItem.displayName+"</option>");
+						}
+
+						adviceTypeSelectObj.removeAttr("disabled");
+					}
+				}
+			});
+		}
+		
         function htmlDecode(input) {
             var doc = new DOMParser().parseFromString(input, "text/html");
             return doc.documentElement.textContent;

@@ -121,7 +121,7 @@ public class TemplateController
 	private HtmlUtil htmlUtil;
 	
 	@RequestMapping("generate/{id}")
-	public void generateStatement(HttpServletResponse response, @PathVariable("id") long templateId, @RequestParam(value="custNo", required=false) String custNo)
+	public void generateDocument(HttpServletResponse response, @PathVariable("id") long templateId, @RequestParam(value="custNo", required=false) String custNo)
 	{
 		Template t = service.read(templateId);
 		
@@ -129,9 +129,12 @@ public class TemplateController
 		log.info("Raw HTML Content:");
 		log.info(t.getContent());
 		
+		Map<String, String> params = new HashMap<>();
+		String html = render(t, params);
+		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		
-		String html = replaceAllImages(t.getContent(), auth.getName());
+		html = replaceAllImages(html, auth.getName());
 		html = htmlUtil.wrapContainer(html);
 		
 		log.debug("Wrapped HTML Content:");
@@ -143,7 +146,7 @@ public class TemplateController
 		response.setHeader("Expires", "0");
 		response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
 		response.setHeader("Pragma", "public");
-		response.setHeader("Content-Disposition", "attachment;filename=statement.pdf");
+		response.setHeader("Content-Disposition", "attachment;filename=advice-"+t.getFolder().getName()+"-"+custNo+".pdf");
 		response.setContentType("application/pdf");
 		
 		try {

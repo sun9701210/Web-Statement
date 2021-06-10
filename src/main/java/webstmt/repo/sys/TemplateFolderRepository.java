@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import webstmt.entity.sys.TemplateFolder;
+import webstmt.entity.sys.datasource.LegalVehicle;
 
 @Repository
 public interface TemplateFolderRepository extends JpaRepository<TemplateFolder, Long>{
@@ -24,4 +25,6 @@ public interface TemplateFolderRepository extends JpaRepository<TemplateFolder, 
 	@Query("select f.id from TemplateFolder f where f.name = :folderName")
 	Long getIdByName(@Param("folderName")String folderName);
 	
+	@Query("select f from TemplateFolder f where f.legalVehicle = :legalVehicle and f.active = true")
+	List<TemplateFolder> findAllActiveFolderByLegalVehicle(@Param("legalVehicle")String legalVehicle);
 }

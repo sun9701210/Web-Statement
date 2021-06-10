@@ -196,6 +196,9 @@
 				window.location.href="/dashboard/template/history/"+tplId+"/"+version;
 			});
 
+			onLegalVehicleChange();
+			$("#tpl-legal-vehicle").change(onLegalVehicleChange);
+
 			var firstSysId = $("#data-dictionary-popup-choose-system-id").first().val();
 			loadDictionary(false);
 
@@ -301,6 +304,30 @@
 				$("select[name='dataBinding-system-id']").change(onSystemIdChangeInBindMore);
 			});
 		});
+
+		function onLegalVehicleChange() {
+			var legalVehicle=$("#tpl-legal-vehicle").children('option:selected').val();
+			var adviceTypeSelectObj = $("#tpl-folder");
+			$.ajax({
+				url: '/dashboard/template-folder/list?legalVehicle='+legalVehicle,
+				type: 'GET',
+				success: function (data) {
+					if(data.length===0) {
+						console.log('INFO: No data found. Nothing will happen.');
+						adviceTypeSelectObj.empty();
+						adviceTypeSelectObj.attr("disabled", true);;
+						confirm('No advice type defined under '+legalVehicle+'.');
+					} else {
+						adviceTypeSelectObj.empty();
+						for(let legalVehicleItem of data) {
+							adviceTypeSelectObj.append("<option value='"+legalVehicleItem.id+"'>"+legalVehicleItem.displayName+"</option>");
+						}
+
+						adviceTypeSelectObj.removeAttr("disabled");
+					}
+				}
+			});
+		}
 
 		function onSystemIdChangeInBindMore() {
 			//1. fetch dictionary array by ajax
