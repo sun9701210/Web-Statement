@@ -6,6 +6,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 //import lombok.Data;
 
 @Entity
@@ -17,6 +19,8 @@ public class SysUser
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
 	private String username;
+	
+	@JsonIgnore
 	private String password;
 	private String role;
 	private String lpar;

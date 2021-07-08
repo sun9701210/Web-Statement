@@ -186,7 +186,7 @@ public class TemplateController
 		tpl.setContent(html);
 		
 		tpl.setOppm(template.getOppm());
-		tpl.setLegalVehicle(template.getLegalVehicle());
+		tpl.setMarket(template.getMarket());
 		
 		long folderId = template.getFolder().getId();
 		TemplateFolder folder = folderService.findById(folderId);
@@ -280,7 +280,7 @@ public class TemplateController
 		tpl.setOppm(template.getOppm());
 		tpl.setLastUpdatedBy(auth.getName());
 		tpl.setLastUpdatedTime(new Date());
-		tpl.setLegalVehicle(template.getLegalVehicle());
+		tpl.setMarket(template.getMarket());
 		
 		//change folder
 		long newFolderId = template.getFolder().getId();
@@ -423,7 +423,7 @@ public class TemplateController
 		jsonTpl.setName(template.getName());
 		jsonTpl.setDescription(template.getDescription());
 		jsonTpl.setContent(template.getContent());
-		jsonTpl.setLegalVehicle(template.getLegalVehicle());
+		jsonTpl.setMarket(template.getMarket());
 		
 		Gson gson = new Gson();
 		
@@ -491,7 +491,7 @@ public class TemplateController
 		model.addAttribute("template", template);
 		
 		//verify permission
-		String templateLegalVehicle = template.getLegalVehicle();
+		String templateLegalVehicle = template.getMarket();
 		String templateRequiredRole = "ROLE_BIZ_"+templateLegalVehicle;
 		
 		boolean authorizedUser = false;

@@ -34,7 +34,7 @@ public class IndexController {
 			}
 		}
 		
-		return "redirect:/login";
+		return "redirect:/index.html";
 	}
 	
 	@RequestMapping("/dashboard")

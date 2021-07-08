@@ -39,4 +39,8 @@ public class SysUserService {
 		SysUser user = repo.getUserByUsername(username);
 		return user != null;
 	}
+	
+	public List<SysUser> searchUser(String username) {
+		return repo.searchUserByName(username);
+	}
 }

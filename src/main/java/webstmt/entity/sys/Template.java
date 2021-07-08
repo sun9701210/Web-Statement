@@ -1,6 +1,8 @@
 package webstmt.entity.sys;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -24,6 +26,9 @@ import webstmt.entity.sys.datasource.DataBinding;
 public class Template implements Serializable
 {
 	private static final long serialVersionUID = -7831627288646326100L;
+	
+	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
@@ -33,11 +38,19 @@ public class Template implements Serializable
 	private String content;
 	private String description;
 	private String oppm;
-	private String legalVehicle;
+	private String market;
+	private String status;
+	
+	private String author;
+	private String reviewer;
+	@Column(nullable=true)
+	private int priority;
 	
 	private String lastUpdatedBy;
 	@OrderBy("lastUpdatedTime desc")
 	private Date lastUpdatedTime;
+	
+	private Date releaseDate;
 	
 	@OneToMany(cascade=CascadeType.ALL)
 	private List<DataBinding> dataBindings;
@@ -117,12 +130,50 @@ public class Template implements Serializable
 	public void setLastUpdatedTime(Date lastUpdatedTime) {
 		this.lastUpdatedTime = lastUpdatedTime;
 	}
-	public String getLegalVehicle() {
-		return legalVehicle;
+	public String getMarket() {
+		return market;
 	}
-	public void setLegalVehicle(String legalVehicle) {
-		this.legalVehicle = legalVehicle;
+	public void setMarket(String legalVehicle) {
+		this.market = legalVehicle;
 	}
+	public String getReleaseDate() {
+		
+		return sdf.format(releaseDate);
+	}
+	public String getAuthor() {
+		return author;
+	}
+	public void setAuthor(String author) {
+		this.author = author;
+	}
+	public String getReviewer() {
+		return reviewer;
+	}
+	public void setReviewer(String reviewer) {
+		this.reviewer = reviewer;
+	}
+	public void setReleaseDate(String releaseDate) throws ParseException {
+		
+		this.releaseDate = sdf.parse(releaseDate);
+		
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public int getPriority() {
+		return priority;
+	}
+	public void setPriority(int priority) {
+		this.priority = priority;
+	}
+	
+	public int getVariableCount() {
+		return this.dataBindings.size();
+	}
+	
 	@Override
 	public String toString() {
 		return "Template [id=" + id + ", name=" + name + ", template=" + content + ", description=" + description
