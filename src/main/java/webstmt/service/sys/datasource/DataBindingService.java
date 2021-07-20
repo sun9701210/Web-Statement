@@ -13,6 +13,10 @@ public class DataBindingService {
 
 	@Autowired
 	private DataBindingRepository repo;
+
+	public List<DataBinding> getAllDataBindingList() {
+		return repo.findAll();
+	}
 	
 	public List<DataBinding> getDataBindingByTemplateId(long templateId)
 	{
@@ -22,6 +26,28 @@ public class DataBindingService {
 	public List<Long> getDataBindingIdsByTemplateId(long templateId)
 	{
 		return repo.getAllDataBindingIdsByTemplateId(templateId);
+	}
+	
+	public DataBinding getDataBindingById(long id) {
+		return repo.getOne(id);
+	}
+	
+	public DataBinding updateDataBinding(DataBinding dataBinding) {
+		
+		return repo.save(dataBinding);
+	}
+	
+	public DataBinding createDataBinding(DataBinding dataBinding) {
+		
+		DataBinding newDb = new DataBinding();
+		
+		newDb.setBindingType(dataBinding.getBindingType());
+		newDb.setDictionary(dataBinding.getDictionary());
+		newDb.setPlaceholder(dataBinding.getPlaceholder());
+		newDb.setProcessorClassName(dataBinding.getProcessorClassName());
+		newDb.setTemplate(dataBinding.getTemplate());
+		
+		return repo.save(newDb);
 	}
 	
 	private static final int _skipStep = 20;

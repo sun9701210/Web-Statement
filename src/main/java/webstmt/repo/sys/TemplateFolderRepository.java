@@ -27,4 +27,7 @@ public interface TemplateFolderRepository extends JpaRepository<TemplateFolder, 
 	
 	@Query("select f from TemplateFolder f where f.legalVehicle = :legalVehicle and f.active = true")
 	List<TemplateFolder> findAllActiveFolderByLegalVehicle(@Param("legalVehicle")String legalVehicle);
+	
+	@Query("select f from TemplateFolder f where f.market = :market and f.active = true")
+	List<TemplateFolder> findAllActiveFolderByMarket(@Param("market") String market);
 }

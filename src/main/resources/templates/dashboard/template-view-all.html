@@ -65,12 +65,12 @@
 				<td th:text="${template.name}"></td>
 				<td th:text="${template.description}"></td>
 				<td th:text="${template.oppm}"></td>
-				<td th:text="${template.legalVehicle}"></td>
+				<td th:text="${template.market}"></td>
 				<td th:text="${template.lastUpdatedBy}"></td>
 				<td th:text="${template.lastUpdatedTime}"></td>
 				<td>
 					<a th:href="@{'/dashboard/template/preview/' + ${template.id} }">Preview</a>&nbsp;
-					<span th:if="${#lists.contains(legalVehiclesAuth, 'ADMIN') or #lists.contains(legalVehiclesAuth, template.legalVehicle)}">
+					<span th:if="${#lists.contains(legalVehiclesAuth, 'ADMIN') or #lists.contains(legalVehiclesAuth, template.market)}">
 						<a th:href="@{'/dashboard/template/edit/' + ${template.id} }">Edit</a>&nbsp;
 						<a href="#" th:onclick="remove([[${template.id}]])">Remove</a>&nbsp;
 					</span>
@@ -134,7 +134,7 @@
 									'<td>'+data[i].name+'</td>'+
 			                        '<td>'+data[i].description+'</td>'+
 			                        '<td>'+data[i].oppm+'</td>'+
-			                        '<td>'+data[i].legalVehicle+'</td>'+
+			                        '<td>'+data[i].market+'</td>'+
 			                        '<td>'+data[i].lastUpdatedBy+'</td>'+
 			                        '<td>'+data[i].lastUpdatedTime+'</td>'+
 			                        '<td>'+'<a href="/dashboard/template/preview/'+data[i].id+'">Preview</a>&nbsp;&nbsp;'+
@@ -180,7 +180,7 @@
 							'<td>'+data[i].name+'</td>'+
 	                        '<td>'+data[i].description+'</td>'+
 	                        '<td>'+data[i].oppm+'</td>'+
-	                        '<td>'+data[i].legalVehicle+'</td>'+
+	                        '<td>'+data[i].market+'</td>'+
 	                        '<td>'+data[i].lastUpdatedBy+'</td>'+
 	                        '<td>'+data[i].lastUpdatedTime+'</td>'+
 	                        '<td>'+'<a href="/dashboard/template/preview/'+data[i].id+'">Preview</a>&nbsp;&nbsp;'+

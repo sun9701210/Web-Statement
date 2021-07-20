@@ -73,7 +73,7 @@ public class DataDictionaryController {
 		DataDictionary dictionary=new DataDictionary();
 		
 		
-		dictionary.setSysId(dic.getSysId());
+		dictionary.setSource(dic.getSource());
 		dictionary.setName(dic.getName());
 		dictionary.setCategory(dic.getCategory());
 		dictionary.setDescription(dic.getDescription());
@@ -126,7 +126,7 @@ public class DataDictionaryController {
 		
 		DataDictionary dictionary=service.read(dic.getId());
 		
-		dictionary.setSysId(dic.getSysId());
+		dictionary.setSource(dic.getSource());
 		dictionary.setName(dic.getName());
 		dictionary.setCategory(dic.getCategory());
 		dictionary.setDescription(dic.getDescription());

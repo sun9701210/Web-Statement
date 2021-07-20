@@ -48,6 +48,10 @@ public class TemplateFolderService {
 		return frepo.findAllActiveFolderByLegalVehicle(legalVehicle.toString());
 	}
 	
+	public List<TemplateFolder> findAllActiveByMarket(String market) {
+		return frepo.findAllActiveFolderByMarket(market);
+	}
+	
 	public List<Object> load(){
 		
 		List<TemplateFolder> allFolders=frepo.findAll();
@@ -151,7 +155,18 @@ public class TemplateFolderService {
 	}
 	
 	
+	public TemplateFolder update(TemplateFolder folder) {
 	
+		return frepo.save(folder);
+	}
 	
-
+	public TemplateFolder create(TemplateFolder folder) {
+		
+		return frepo.save(folder);
+	}
+	
+	public void remove(long id) {
+		
+		frepo.deleteById(id);
+	}
 }

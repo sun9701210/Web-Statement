@@ -34,6 +34,7 @@ public class IndexController {
 			}
 		}
 		
+		
 		return "redirect:/index.html";
 	}
 	

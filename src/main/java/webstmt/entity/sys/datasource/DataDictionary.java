@@ -20,7 +20,7 @@ public class DataDictionary {
 	private String format;
 	
 	@Enumerated(EnumType.STRING)
-	private SystemID sysId;
+	private SystemID source;
 	@Enumerated(EnumType.STRING)
 	private DataType type;
 	@Enumerated(EnumType.STRING)
@@ -49,11 +49,11 @@ public class DataDictionary {
 	public void setFormat(String format) {
 		this.format = format;
 	}
-	public SystemID getSysId() {
-		return sysId;
+	public SystemID getSource() {
+		return source;
 	}
-	public void setSysId(SystemID sysId) {
-		this.sysId = sysId;
+	public void setSource(SystemID source) {
+		this.source = source;
 	}
 	public DataType getType() {
 		return type;
@@ -76,7 +76,7 @@ public class DataDictionary {
 	@Override
 	public String toString() {
 		return "DataDictionary [id=" + id + ", name=" + name + ", description=" + description + ", defaultValue="
-				+ defaultValue + ", format=" + format + ", sysId=" + sysId + ", type=" + type + ", category=" + category
+				+ defaultValue + ", format=" + format + ", source=" + source + ", type=" + type + ", category=" + category
 				+ "]";
 	}
 }

@@ -19,7 +19,12 @@ public class TemplateFolder {
 	private String name;
 	private String description;
 	private Boolean active;
+	@Deprecated
 	private String legalVehicle;
+	
+	private String market;
+	private String source;
+	private String category;
 	
 	@ManyToOne
 	private TemplateFolder parent;
@@ -91,6 +96,30 @@ public class TemplateFolder {
 
 	public void setLegalVehicle(String legalVehicle) {
 		this.legalVehicle = legalVehicle;
+	}
+
+	public String getMarket() {
+		return market;
+	}
+
+	public void setMarket(String market) {
+		this.market = market;
+	}
+
+	public String getSource() {
+		return source;
+	}
+
+	public void setSource(String source) {
+		this.source = source;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
 	}
 
 	public Boolean getActive() {

@@ -19,6 +19,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreType;
 
 import webstmt.entity.sys.datasource.DataBinding;
 
@@ -45,6 +47,7 @@ public class Template implements Serializable
 	private String reviewer;
 	@Column(nullable=true)
 	private int priority;
+//	private int variableCount;
 	
 	private String lastUpdatedBy;
 	@OrderBy("lastUpdatedTime desc")
@@ -87,11 +90,11 @@ public class Template implements Serializable
 		this.description = description;
 	}
 	
-	@JsonBackReference
+	@JsonBackReference(value="databindings")
 	public List<DataBinding> getDataBindings() {
 		return dataBindings;
 	}
-	@JsonBackReference
+//	@JsonBackReference
 	public void setDataBindings(List<DataBinding> dataBindings) {
 		this.dataBindings = dataBindings;
 	}	
@@ -110,11 +113,11 @@ public class Template implements Serializable
 	public void setOppm(String oppm) {
 		this.oppm = oppm;
 	}
-	@JsonBackReference
+	@JsonBackReference(value="versions")
 	public List<TemplateVersion> getVersions() {
 		return versions;
 	}
-	@JsonBackReference
+//	@JsonBackReference
 	public void setVersions(List<TemplateVersion> versions) {
 		this.versions = versions;
 	}
@@ -157,6 +160,9 @@ public class Template implements Serializable
 		this.releaseDate = sdf.parse(releaseDate);
 		
 	}
+	public void setReleaseDate(Date releaseDate) {
+		this.releaseDate = releaseDate;
+	}
 	public String getStatus() {
 		return status;
 	}
@@ -171,8 +177,16 @@ public class Template implements Serializable
 	}
 	
 	public int getVariableCount() {
+		
+//		variableCount = this.dataBindings.size();
+		if(this.dataBindings==null) return 0;
+		
 		return this.dataBindings.size();
 	}
+	
+//	public void setVariableCount(int variableCount) {
+//		//just ignore this cause request body json will not contain such value
+//	}
 	
 	@Override
 	public String toString() {

@@ -13,8 +13,8 @@ import webstmt.entity.sys.datasource.SystemID;
 @Repository
 public interface DataDictionaryRepository extends JpaRepository<DataDictionary, Long> {
 
-	@Query("select d from DataDictionary d where d.sysId = :sysId")
-	List<DataDictionary> findAllBySystemId(@Param("sysId")SystemID sysId);
+	@Query("select d from DataDictionary d where d.source = :source")
+	List<DataDictionary> findAllBySystemId(@Param("source")SystemID source);
 	
 	@Query("select d from DataDictionary d where d.name like CONCAT('%',:name,'%')")
 	List<DataDictionary> findByName(@Param("name")String name);
