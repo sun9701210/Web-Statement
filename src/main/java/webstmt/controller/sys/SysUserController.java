@@ -82,7 +82,7 @@ public class SysUserController {
 		model.addAttribute("sysUser", sysUser);
 		model.addAttribute("allRoles", SysRole.values());
 		model.addAttribute("allLpars", SysLpar.values());
-		model.addAttribute("sysRole",sysUser.getRole());
+		model.addAttribute("sysRole",sysUser.getRoles());
 		model.addAttribute("sysLpar",sysUser.getLpar());
 		
 		return "dashboard/user-edit.html";
@@ -93,7 +93,7 @@ public class SysUserController {
 	{
 		//copy to prevent change other field
 		SysUser user = service.findById(sysUser.getId());
-		user.setRole(sysUser.getRole());
+		user.setRoles(sysUser.getRoles());
 		user.setLpar(sysUser.getLpar());
 
 		System.out.println("Saving "+user);

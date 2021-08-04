@@ -39,15 +39,15 @@ public class DataBindingService {
 	
 	public DataBinding createDataBinding(DataBinding dataBinding) {
 		
-		DataBinding newDb = new DataBinding();
+//		DataBinding newDb = new DataBinding();
+//		
+//		newDb.setBindingType(dataBinding.getBindingType());
+//		newDb.setDictionary(dataBinding.getDictionary());
+//		newDb.setPlaceholder(dataBinding.getPlaceholder());
+//		newDb.setProcessorClassName(dataBinding.getProcessorClassName());
+//		newDb.setTemplate(dataBinding.getTemplate());
 		
-		newDb.setBindingType(dataBinding.getBindingType());
-		newDb.setDictionary(dataBinding.getDictionary());
-		newDb.setPlaceholder(dataBinding.getPlaceholder());
-		newDb.setProcessorClassName(dataBinding.getProcessorClassName());
-		newDb.setTemplate(dataBinding.getTemplate());
-		
-		return repo.save(newDb);
+		return repo.save(dataBinding);
 	}
 	
 	private static final int _skipStep = 20;

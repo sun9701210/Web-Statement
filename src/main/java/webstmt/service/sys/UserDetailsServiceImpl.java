@@ -1,8 +1,11 @@
 package webstmt.service.sys;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -36,12 +39,19 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 			throw new UsernameNotFoundException("User not found");
 		}
 		
-		log.info("User's Role: "+sysUser.getRole());
+		log.info("User's Role: "+sysUser.getRoleList());
 		
 //		GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(sysUser.getRole());
 //		grantedAuthorities.add(grantedAuthority);
 		
-		return new User(sysUser.getUsername(), sysUser.getPassword(), AuthorityUtils.commaSeparatedStringToAuthorityList(sysUser.getRole()));
+		List<GrantedAuthority> temp = AuthorityUtils.commaSeparatedStringToAuthorityList(sysUser.getRoleList());
+		
+		for (GrantedAuthority g : temp) {
+			
+			System.out.println(g);
+		}
+		
+		return new User(sysUser.getUsername(), sysUser.getPassword(), AuthorityUtils.commaSeparatedStringToAuthorityList(sysUser.getRoleList()));
 	}
 
 }

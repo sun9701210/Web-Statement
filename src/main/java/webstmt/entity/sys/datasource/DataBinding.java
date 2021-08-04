@@ -2,6 +2,7 @@ package webstmt.entity.sys.datasource;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -29,7 +30,7 @@ public class DataBinding implements Serializable
 	@ManyToOne
 	private DataDictionary dictionary;
 	
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.PERSIST)
 	private Template template;
 
 	public long getId() {
@@ -78,5 +79,11 @@ public class DataBinding implements Serializable
 
 	public void setDictionary(DataDictionary dictionary) {
 		this.dictionary = dictionary;
+	}
+
+	@Override
+	public String toString() {
+		return "DataBinding [id=" + id + ", placeholder=" + placeholder + ", bindingType=" + bindingType
+				+ ", processorClassName=" + processorClassName + ", dictionary=" + dictionary + "]";
 	}
 }
