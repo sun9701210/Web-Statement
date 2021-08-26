@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,9 +29,18 @@ public class DictionaryApiController {
 	
 	@GetMapping("list")
 	@ResponseBody
-	public Map<String, Object> list() {
+	public Map<String, Object> list(@RequestParam(defaultValue="All") String source) {
 		
-		List<DataDictionary> list = service.findAll();
+		List<DataDictionary> list = null;
+		
+		if("All".equalsIgnoreCase(source)) {
+			
+			list = service.findAll();
+			
+		} else {
+			
+			list = service.findAllBySystemId(source);
+		}
 		
 		MapResult result = MapResult.newInstance(20000, "succ");
 		

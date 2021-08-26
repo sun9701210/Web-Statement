@@ -3,16 +3,23 @@ package webstmt.service.sys;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import webstmt.entity.sys.Route;
+import webstmt.repo.sys.RoleRepository;
 import webstmt.repo.sys.RouteRepository;
 
 @Service
 public class RouteService {
+
+	@Value("${app.dev-mode}")
+	private boolean isDevMode;
 	
 	@Autowired
 	private RouteRepository repo;
+	@Autowired
+	private RoleRepository roleRepo;
 
 	public List<Route> tree() {
 		
@@ -25,6 +32,14 @@ public class RouteService {
 		for (Route topNode : topNodes) {
 			
 			topNode.setChildren(findChildren(topNode.getId()));
+			
+			if(isDevMode) {
+				System.out.println("Dev Mode will ignore role check.");
+			} else {
+				topNode.setRoles(roleRepo.getBindingRolesByRoute(topNode.getId()));		
+				System.out.println("Top Route ID: "+topNode.getId() +" - "+topNode.getRoles());		
+			}
+			
 		}
 		
 		return topNodes;
@@ -57,7 +72,14 @@ public class RouteService {
 			
 			child.setChildren(findChildren(child.getId()));
 			child.setParent(null);
-			
+
+
+			if(isDevMode) {
+				System.out.println("Dev Mode will ignore role check.");
+			} else {
+				child.setRoles(roleRepo.getBindingRolesByRoute(child.getId()));
+				System.out.println("Route ID: "+child.getId() +" - "+child.getRoles());	
+			}
 		}
 		
 //		System.out.println("Finding children for "+parentId);

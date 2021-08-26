@@ -2,11 +2,13 @@ package webstmt.entity.sys;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -30,7 +32,7 @@ public class SysUser
 	private String lpar;
 	private String roleList;
 	
-	@OneToMany(fetch=FetchType.EAGER)
+	@ManyToMany(fetch=FetchType.EAGER)
 	private List<Role> roles;
 	
 	public long getId() {
@@ -77,6 +79,10 @@ public class SysUser
 			this.roleList = "";
 			for (Role role : roles) {
 				this.roleList += role.getName() + ",";
+			}
+			
+			if(this.roleList.length()>0) {
+				this.roleList = this.roleList.substring(0, this.roleList.length()-1);
 			}
 			
 			return this.roleList;

@@ -1,5 +1,6 @@
 package webstmt.service.sys;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,26 @@ public class SysUserService {
 
 	@Autowired
 	private SysUserRepository repo;
+	
+	public List<SysUser> getAllForDisplay() {
+		
+		List<SysUser> originalList = repo.findAll();
+		
+		List<SysUser> displayList = new ArrayList<>();
+		
+		for (SysUser originalUser : originalList) {
+			
+			SysUser displayUser = new SysUser();
+			displayUser.setId(originalUser.getId());
+			displayUser.setLpar(originalUser.getLpar());
+			displayUser.setUsername(originalUser.getUsername());
+			displayUser.setRoles(originalUser.getRoles());
+			
+			displayList.add(displayUser);
+		}
+		
+		return displayList;
+	}
 	
 	public List<SysUser> readAll()
 	{
@@ -38,6 +59,11 @@ public class SysUserService {
 	{
 		SysUser user = repo.getUserByUsername(username);
 		return user != null;
+	}
+	
+	public SysUser findByUsername(String username) {
+		
+		return repo.findUserByUsername(username);
 	}
 	
 	public List<SysUser> searchUser(String username) {

@@ -54,7 +54,7 @@ public class RoleService {
 		
 		for (Route node : role.getRoutes()) {
 			
-			findNodes(node, savedNodes);
+			savedNodes = findNodes(node, savedNodes);
 			
 		}
 		

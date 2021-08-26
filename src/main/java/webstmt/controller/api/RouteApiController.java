@@ -40,11 +40,16 @@ public class RouteApiController {
 		MapResult result = MapResult.newInstance(20000, "succ");
 		
 		List<Route> routeTree = service.tree();
-		
+
+		result.setNode("data", "message", "test");
 		result.setNode("data", "items", routeTree);
 		result.setNode("data", "total", routeTree.size());
 		
-		return result.getMap();
+		Map<String, Object> resp = result.getMap();
+		
+		resp.put("message","test");
+		
+		return resp;
 	}
 	
 	@GetMapping("list")
@@ -139,6 +144,12 @@ public class RouteApiController {
 //			MapResult result = MapResult.newInstance(50000, "Please remove sub menus first.");
 //			return result.getMap();
 //		}
+		
+		if(deletingRoute.getParent()!=null) {
+			MapResult result = MapResult.newInstance(50000, "Please remove parent menu first.");
+			result.setNode("message", "Please remove parent menu first.");
+			return result.getMap();
+		}
 		
 		MapResult result = MapResult.newInstance(20000, "succ");
 		

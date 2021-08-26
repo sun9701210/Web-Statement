@@ -17,4 +17,7 @@ public interface SysUserRepository extends JpaRepository<SysUser, Long>
 	
 	@Query("select s from SysUser s where s.username like CONCAT('%',:uName,'%')")
 	List<SysUser> searchUserByName(@Param("uName") String username);
+	
+	@Query("select s from SysUser s where s.username = :username")
+	SysUser findUserByUsername(@Param("username") String username);
 }

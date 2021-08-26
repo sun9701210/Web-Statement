@@ -5,21 +5,25 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.springframework.beans.factory.annotation.Value;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name="sys_route")
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
 public class Route {
-
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
@@ -40,6 +44,10 @@ public class Route {
 	@Transient
 	private List<Route> children=new ArrayList<Route>();
 
+	@JsonIgnore
+	@ManyToMany(fetch = FetchType.EAGER)
+	private List<Role> roles;
+	
 	public long getId() {
 		return id;
 	}
@@ -118,6 +126,24 @@ public class Route {
 
 	public void setMeta(RouteMeta meta) {
 		this.meta = meta;
+	}
+
+	public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		
+		System.out.println("Role Bound to Route: "+roles.size());
+		this.roles = roles;
+		if(this.meta!=null) {
+			List<String> roleList = new ArrayList<>();
+			for (Role role : roles) {
+				roleList.add(role.getKey());
+			}
+			String[] roleStrArr = roleList.toArray(new String[roleList.size()]);
+			this.meta.setRoles(roleStrArr);
+		}
 	}
 
 	@Override

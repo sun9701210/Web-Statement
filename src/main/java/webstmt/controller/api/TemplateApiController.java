@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
@@ -35,6 +39,7 @@ import webstmt.entity.sys.Template;
 import webstmt.entity.sys.TemplateFolder;
 import webstmt.entity.sys.datasource.DataBinding;
 import webstmt.entity.sys.datasource.DataDictionary;
+import webstmt.repo.sys.TemplateQueryCriteria;
 import webstmt.service.sys.TemplateFolderService;
 import webstmt.service.sys.TemplateService;
 import webstmt.utils.HtmlUtil;
@@ -55,7 +60,7 @@ public class TemplateApiController {
 	@Autowired
 	private TemplateFolderService folderService;
 	
-	@PostMapping("create")
+	@PostMapping
 	@ResponseBody
 	public Map<String, Object> create(@RequestBody TemplateDto dto) {
 		
@@ -92,17 +97,38 @@ public class TemplateApiController {
 	
 	@GetMapping("list")
 	@ResponseBody
-	public Map<String, Object> list(@RequestParam(defaultValue="1") int page, @RequestParam(defaultValue="10")int limit){
+	public Map<String, Object> list(@RequestParam(defaultValue="1") int page, 
+										@RequestParam(defaultValue="10")int limit,
+										@RequestParam(name="name", required=false) String nameWildcard,
+										@RequestParam(name="priority", required=false) Integer priority,
+										@RequestParam(defaultValue="All")String market,
+										@RequestParam(defaultValue="-id") String sort,
+										@RequestParam(name="typeId",required=false) Long folderId){
 	
-		System.out.println("Requesting page/limit -> "+page + "/" + limit);
+		System.out.format("Requesting page/limit/name/priority/market/sort/folderId -> %s/%s/%s/%s/%s/%s/%s", page, limit, nameWildcard, priority, market, sort, folderId);
 		
-		List<Template> templates = service.readAll();
+		int offsetPage = page > 0 ? page-1 : 0;
+		
+		TemplateQueryCriteria queryCriteria = new TemplateQueryCriteria();
+		queryCriteria.setIdSort(sort);
+		
+		if(!"All".equalsIgnoreCase(market)) {
+
+			queryCriteria.setMarket(market);
+		}
+		
+		queryCriteria.setNameWildcard(nameWildcard);
+		queryCriteria.setPriority(priority);
+		queryCriteria.setTypeId(folderId);
+
+		List<Template> templates = service.readPage(queryCriteria, offsetPage, limit);
 		
 		Map<String, Object> response = new HashMap<String, Object>();
 		
 		Map<String, Object> responseData = new HashMap<>();
 		
-		responseData.put("total", templates.size());
+		long total = service.count(queryCriteria);
+		responseData.put("total", total);
 		responseData.put("items", templates);
 		
 		response.put("code", 20000);
@@ -268,7 +294,7 @@ public class TemplateApiController {
 		
 		for (String rawImageHtml : imageStrings) 
 		{
-			String newImageHtml = replaceImageByBase64(StringUtils.uriDecode(rawImageHtml, Charset.forName("UTF-8")), loginUsername);
+			String newImageHtml = replaceImageByBase64(StringUtils.uriDecode(rawImageHtml, Charset.forName("UTF-8")));
 			
 			rawNewImagesMap.put(rawImageHtml, newImageHtml);
 		}
@@ -292,6 +318,17 @@ public class TemplateApiController {
 	private String replaceImageByBase64(String rawImgPath, String loginUsername)
 	{
 		String imagePhysicalPath = PathUtil.convertToPhysicalPath(rawImgPath, userUploadPhysicalPath, loginUsername);
+		log.info("Reading image - "+imagePhysicalPath);
+		
+		return ImageUtils.convertImageBytesToBase64String(imagePhysicalPath);
+	}
+	
+	@Value("${user.upload.tmp}")
+	private String imageTempPath;
+	
+	private String replaceImageByBase64(String rawImgPath)
+	{
+		String imagePhysicalPath = PathUtil.convertToPhysicalPath(rawImgPath, imageTempPath);
 		log.info("Reading image - "+imagePhysicalPath);
 		
 		return ImageUtils.convertImageBytesToBase64String(imagePhysicalPath);

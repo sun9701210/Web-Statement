@@ -9,9 +9,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,8 +22,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import webstmt.entity.sys.SysUser;
 import webstmt.service.sys.SysUserService;
+import webstmt.utils.PasswordUtils;
 import webstmt.viewmodel.LoginDto;
 import webstmt.viewmodel.LoginUser;
+import webstmt.viewmodel.MapResult;
 import webstmt.viewmodel.Result;
 
 @RestController
@@ -58,47 +62,65 @@ public class UserController {
 	@ResponseBody
 	public Map<String, Object> login(@RequestBody LoginDto loginDto, HttpServletRequest request) {
 		
-		LoginUser user = new LoginUser();
-		user.setName("admin");
-		user.setAvatar("111");
-		user.setIntroduction("222");
-		user.setRoles(new String[] {"admin"});
+		MapResult result = MapResult.newInstance(20000, "Succ");
 		
-//		Result result = Result.result(20000, "Succ", user);
+//		LoginUser user = new LoginUser();
+//		user.setName("admin");
+//		user.setAvatar("111");
+//		user.setIntroduction("222");
+//		user.setRoles(new String[] {"admin"});
+		
+		String username = loginDto.getUsername();
+		
+		if(!userService.existsByUsername(username)) {
+			
+			System.out.println("User not exist -> "+username);
+			
+			result = MapResult.newInstance(50000, "Fail to login.");
+			
+			result.setNode("data", null);
+			
+			return result.getMap();
+		}
 		
 		System.out.println("Username: "+loginDto.getUsername());
 		System.out.println("Password: "+loginDto.getPassword());
 
-		Map<String, Object> responseData = new HashMap<>();
+		SysUser user = userService.findByUsername(username);
+		
+		if(!user.getPassword().contentEquals(loginDto.getPassword())) {
+
+			System.out.println("Wrong password -> "+username);
+			
+			result = MapResult.newInstance(50000, "Fail to login.");
+			
+			result.setNode("data", "test");
+			result.setNode("message", "Invalid username or password.");
+			
+			return result.getMap();
+			
+		}
+		
+		
+//		Map<String, Object> responseData = new HashMap<>();
 		
 		HttpSession session = request.getSession();
 		
-		String roleId = "none";
+		String roleId = user.getRoleList();
 		
-		if("admin".equalsIgnoreCase(loginDto.getUsername()))
-		{
-			session.setAttribute("role_id", "admin");
-		}
-		
-		if("editor".equalsIgnoreCase(loginDto.getUsername()))
-		{
-			session.setAttribute("role_id", "editor");
-		}
-		
-		if("visitor".equalsIgnoreCase(loginDto.getUsername()))
-		{
-			session.setAttribute("role_id", "visitor");
-		}
+		session.setAttribute("role_id", roleId);
 
-		responseData.put("token", "1A2B3C4D");
-
-		Map<String, Object> response = new HashMap<String, Object>();
+		result.setNode("data", "token", "1A2B3C4D");
 		
-		response.put("code", 20000);
-		response.put("msg", "Succ");
-		response.put("data", responseData);
+//		responseData.put("token", "1A2B3C4D");
+//
+//		Map<String, Object> response = new HashMap<String, Object>();
+//		
+//		response.put("code", 20000);
+//		response.put("msg", "Succ");
+//		response.put("data", responseData);
 		
-		return response;
+		return result.getMap();
 	}
 	
 	@GetMapping("info")
@@ -139,5 +161,84 @@ public class UserController {
 		response.put("msg", "succ");
 		
 		return response;
+	}
+	
+	@GetMapping("list")
+	@ResponseBody
+	public Map<String, Object> list() {
+		
+		List<SysUser> displayUserList = userService.getAllForDisplay();
+		
+		MapResult result = MapResult.newInstance(20000, "succ");
+		
+		result.setNode("data", "items", displayUserList);
+		result.setNode("data", "total", displayUserList.size());
+		
+		return result.getMap();
+	}
+	
+	@PostMapping
+	@ResponseBody
+	public Map<String, Object> add(@RequestBody SysUser user) {
+		
+		System.out.println(user);
+		
+		user.setPassword(PasswordUtils.generateInitialPassword());
+		
+		MapResult result = MapResult.newInstance(20000, "succ");
+		
+		SysUser savedUser = userService.save(user);
+		
+		result.setNode("data", savedUser);
+		
+		return result.getMap();
+	}
+	
+	@DeleteMapping("{id}")
+	@ResponseBody
+	public Map<String, Object> delete(@PathVariable("id") Long id) {
+		
+		System.out.println("Removing user -> "+id);
+		
+		MapResult result = MapResult.newInstance(20000, "succ");
+		
+		userService.remove(id);
+		
+		return result.getMap();
+	}
+	
+	@PutMapping
+	@ResponseBody
+	public Map<String, Object> update(@RequestBody SysUser user) {
+		
+		System.out.println(user);
+		
+		MapResult result = MapResult.newInstance(20000, "succ");
+		
+		return result.getMap();
+	}
+	
+	@PutMapping("role")
+	@ResponseBody
+	public Map<String, Object> updateRole(@RequestBody SysUser user) {
+		
+		System.out.println(user);
+
+		MapResult result = MapResult.newInstance(20000, "User's Role updated successfully!");
+		
+		SysUser originalUser = userService.findById(user.getId());
+		
+		if(originalUser==null) {
+			result = MapResult.newInstance(50000, "Invalid User.");
+			return result.getMap();
+		}
+		
+		originalUser.setRoles(user.getRoles());
+		
+		SysUser savedUser = userService.save(originalUser);
+		
+		result.setNode("data", savedUser);
+		
+		return result.getMap();
 	}
 }

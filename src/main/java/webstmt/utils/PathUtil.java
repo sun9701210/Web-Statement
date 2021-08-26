@@ -13,6 +13,14 @@ public class PathUtil
 		return imagePhysicalPath;
 	}
 	
+	public static String convertToPhysicalPath(String htmlImagePath, String physicalPath)
+	{
+		String imageFileName =htmlImagePath.substring(htmlImagePath.lastIndexOf("/")+1);
+		String imagePhysicalPath = physicalPath+imageFileName;
+		
+		return imagePhysicalPath;
+	}
+	
 	public static String getUserUploadBasePhysicalPath(String physicalPath, String loginUsername)
 	{
 		String pathPrefix = physicalPath.substring(0, physicalPath.lastIndexOf(loginNamePlaceholder));
