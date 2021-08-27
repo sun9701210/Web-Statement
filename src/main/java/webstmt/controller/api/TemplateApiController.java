@@ -271,7 +271,7 @@ public class TemplateApiController {
 		response.setHeader("Expires", "0");
 		response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
 		response.setHeader("Pragma", "public");
-		response.setHeader("Content-Disposition", "attachment;filename=advice-"+t.getFolder().getName()+"-"+custNo+".pdf");
+		response.setHeader("Content-Disposition", "attachment;filename="+t.getFolder().getName()+"_"+t.getOppm()+"_"+t.getName()+".pdf");
 		response.setContentType("application/pdf");
 		
 		try {
