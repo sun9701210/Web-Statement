@@ -26,6 +26,7 @@ import com.itextpdf.layout.element.LineSeparator;
 public class PDFUtils
 {
 	private static final Logger log = LoggerFactory.getLogger(PDFUtils.class);
+	private static final int pageWidth = 1000;
 	
 	public ByteArrayOutputStream html2Pdf(String html) 
 	{
@@ -41,7 +42,7 @@ public class PDFUtils
 		
 		PdfDocument pdf = new PdfDocument(writer);
 		
-		pdf.setDefaultPageSize(new PageSize(595, 14400));
+		pdf.setDefaultPageSize(new PageSize(pageWidth, 14400));
 		
 		Document document = null;
 		
@@ -64,7 +65,7 @@ public class PDFUtils
 		
 		float y = endPosition.getY() - 36;
 		
-		page.setMediaBox(new Rectangle(0, y, 595, 14400-y));
+		page.setMediaBox(new Rectangle(0, y, pageWidth, 14400-y));
 
 		document.close();
 		

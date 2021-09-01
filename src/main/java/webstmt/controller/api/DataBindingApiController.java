@@ -74,6 +74,14 @@ public class DataBindingApiController {
 	@ResponseBody
 	public Map<String, Object> remove(@PathVariable("id") long id) {
 		
+		DataBinding binding = service.getDataBindingById(id);
+		
+		Template template = binding.getTemplate();
+		
+		template.getDataBindings().remove(binding);
+		
+		templateService.save(template);
+		
 		service.delete(id);
 		
 		MapResult result = MapResult.newInstance(20000, "succ");
@@ -118,10 +126,13 @@ public class DataBindingApiController {
 	@ResponseBody
 	public Map<String, Object> update(@RequestBody DataBindingForm form) {
 		
+		System.out.println(form);
+		
 		DataBinding binding = service.getDataBindingById(form.getId());
 		
 		DataDictionary newDictionary = dictionaryService.read(form.getDictionaryId());
 		
+		System.out.println(newDictionary);
 		binding.setDictionary(newDictionary);
 		binding.setPlaceholder(form.getPlaceholder());
 		
