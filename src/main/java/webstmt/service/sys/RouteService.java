@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import webstmt.entity.sys.Role;
 import webstmt.entity.sys.Route;
 import webstmt.repo.sys.RoleRepository;
 import webstmt.repo.sys.RouteRepository;
@@ -23,7 +24,6 @@ public class RouteService {
 
 	public List<Route> tree() {
 		
-		//TODO 
 		//1. get top level routes
 		//2. find children of top level routes, recursively
 		
@@ -36,6 +36,16 @@ public class RouteService {
 			if(isDevMode) {
 				System.out.println("Dev Mode will ignore role check.");
 			} else {
+				
+				System.out.println("Route ID: " + topNode.getId());
+				
+				List<Role> roles= roleRepo.getBindingRolesByRoute(topNode.getId());
+				
+				for (Role role : roles) {
+					
+					System.out.println("Role: "+role);
+				}
+				
 				topNode.setRoles(roleRepo.getBindingRolesByRoute(topNode.getId()));		
 				System.out.println("Top Route ID: "+topNode.getId() +" - "+topNode.getRoles());		
 			}

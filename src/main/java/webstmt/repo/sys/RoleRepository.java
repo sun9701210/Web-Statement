@@ -13,6 +13,6 @@ import org.springframework.data.repository.query.Param;
 @Repository
 public interface RoleRepository extends JpaRepository<Role, Long> {
 
-	@Query("select r from Role r, Route rt where rt.id = :routeId")
+	@Query("select r from Role r join r.routes as rt where rt.id = :routeId")
 	List<Role> getBindingRolesByRoute(@Param("routeId") long routeId);
 }

@@ -1,9 +1,11 @@
 package webstmt.controller.api;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -31,6 +33,24 @@ import webstmt.viewmodel.Result;
 @RestController
 @RequestMapping("/apis/vue-element-admin/user")
 public class UserController {
+	
+	private static final Map<String, String[]> tokenMap = new HashMap<>();
+	
+	private void saveToken(String token, String[] roles) {
+		tokenMap.put(token, roles);
+	}
+	
+	private String[] getRoles(String token) {
+		return tokenMap.get(token);
+	}
+	
+	private void removeToken(String token) {
+		tokenMap.remove(token);
+	}
+	
+	private String generateRandomToken() {
+		return UUID.randomUUID().toString();
+	}
 	
 	@Autowired
 	private SysUserService userService;
@@ -64,12 +84,6 @@ public class UserController {
 		
 		MapResult result = MapResult.newInstance(20000, "Succ");
 		
-//		LoginUser user = new LoginUser();
-//		user.setName("admin");
-//		user.setAvatar("111");
-//		user.setIntroduction("222");
-//		user.setRoles(new String[] {"admin"});
-		
 		String username = loginDto.getUsername();
 		
 		if(!userService.existsByUsername(username)) {
@@ -94,38 +108,32 @@ public class UserController {
 			
 			result = MapResult.newInstance(50000, "Fail to login.");
 			
-			result.setNode("data", "test");
+			result.setNode("data", null);
 			result.setNode("message", "Invalid username or password.");
 			
 			return result.getMap();
 			
 		}
 		
-		
-//		Map<String, Object> responseData = new HashMap<>();
-		
 		HttpSession session = request.getSession();
 		
 		String roleId = user.getRoleList();
 		
-		session.setAttribute("role_id", roleId);
+		session.setAttribute("role_id", roleId.toLowerCase());
 
-		result.setNode("data", "token", "1A2B3C4D");
+		String newToken = generateRandomToken();
+		String[] roles = user.getRoleList().toLowerCase().split(",");
 		
-//		responseData.put("token", "1A2B3C4D");
-//
-//		Map<String, Object> response = new HashMap<String, Object>();
-//		
-//		response.put("code", 20000);
-//		response.put("msg", "Succ");
-//		response.put("data", responseData);
+		saveToken(newToken, roles);
 		
+		result.setNode("data", "token", newToken);
+	
 		return result.getMap();
 	}
 	
 	@GetMapping("info")
 	@ResponseBody
-	public Map<String, Object> info(HttpServletRequest request) {
+	public Map<String, Object> info(@RequestParam("token")String token, HttpServletRequest request) {
 		
 		HttpSession session = request.getSession();
 		
@@ -136,7 +144,9 @@ public class UserController {
 		Map<String, Object> response = new HashMap<String, Object>();
 		Map<String, Object> responseData = new HashMap<>();
 		
-		responseData.put("roles", new String[] {roleId});
+		String[] roles = getRoles(token);
+		
+		responseData.put("roles", roles);
 		responseData.put("name", "Super "+roleId);
 		
 		responseData.put("avatar", "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif");
